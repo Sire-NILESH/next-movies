@@ -4,7 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { DocumentData } from "firebase/firestore";
 import { useRef, useState } from "react";
 
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 import Thumbnail from "./thumbnail";
 
 interface Props {

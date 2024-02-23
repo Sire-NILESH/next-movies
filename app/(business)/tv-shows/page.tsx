@@ -1,7 +1,7 @@
 import Banner from "@/components/banner";
 import Row from "@/components/row";
 import UserListRow from "@/components/user-list-row";
-import { getTvShowsPageProps } from "@/lib/pagePropsActions";
+import { getTvShowsPageProps } from "@/lib/page-props-actions";
 import React from "react";
 
 const TvShowsPage = async () => {

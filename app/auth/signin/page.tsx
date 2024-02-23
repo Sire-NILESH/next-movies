@@ -1,14 +1,16 @@
 "use client";
 
-import useAuth from "@/hooks/useAuth";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import toast, { Toaster } from "react-hot-toast";
+import useAuthHandlers from "@/hooks/useAuthHandlers";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import AuthForm from "../_components.tsx/auth-form";
 import AuthFormButton from "../_components.tsx/auth-form-btn";
 import AuthFormInput from "../_components.tsx/auth-form-input";
-import Link from "next/link";
-import AuthForm from "../_components.tsx/auth-form";
-import { useState } from "react";
+import { toastStyle } from "@/lib/constants";
 
 interface Inputs {
   email: string;
@@ -16,18 +18,18 @@ interface Inputs {
 }
 
 function Signin() {
-  const { signIn } = useAuth();
+  const {
+    signinHandler,
+    loading,
+    actionSuccess,
+    error: authErr,
+    resetAuthHandlerStates,
+  } = useAuthHandlers();
   const [showPassword, setShowPassword] = useState(false);
 
-  const toastStyle = {
-    background: "white",
-    color: "black",
-    fontWeight: "bold",
-    fontSize: "16px",
-    padding: "15px",
-    borderRadius: "9999px",
-    maxWidth: "1000px",
-  };
+  const router = useRouter();
+
+  const { status } = useSession();
 
   const {
     register,
@@ -47,9 +49,25 @@ function Signin() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await signIn(data.email, data.password);
+    await signinHandler(data.email, data.password);
     reset();
   };
+
+  useEffect(() => {
+    if (actionSuccess && status === "authenticated") {
+      toast("Sign in successful", {
+        duration: 8000,
+        style: toastStyle,
+      });
+    }
+
+    if (authErr) {
+      toast(authErr.message, {
+        duration: 8000,
+        style: toastStyle,
+      });
+    }
+  }, [status, authErr, actionSuccess]);
 
   return (
     <AuthForm onSubmit={handleSubmit(onSubmit)} heading="Sign In">
@@ -69,7 +87,7 @@ function Signin() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             validationErr={errors.password}
-            errorMsg="Your password must contain between 6 and 14 characters."
+            errorMsg="Your password must be between 6 to 14 characters only."
             {...register("password", {
               required: true,
               minLength: 6,
@@ -89,18 +107,23 @@ function Signin() {
         </div>
       </div>
 
-      <AuthFormButton type="submit">Sign In</AuthFormButton>
-
-      <Toaster position="bottom-center" />
+      <AuthFormButton disabled={loading} loading={loading} type="submit">
+        Sign In
+      </AuthFormButton>
 
       <div className="text-[gray]">
         New here?{" "}
-        <Link
+        <button
+          role="link"
+          type="button"
           className="cursor-pointer text-white hover:underline"
-          href={"/auth/signup"}
+          onClick={() => {
+            resetAuthHandlerStates();
+            router.push("/auth/signup");
+          }}
         >
           Sign up now
-        </Link>
+        </button>
       </div>
     </AuthForm>
   );

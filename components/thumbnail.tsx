@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRecoilState } from "recoil";
 import { DocumentData } from "firebase/firestore";
 import { modalState, movieState } from "@/atoms/appAtoms";
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 
 interface Props {
   // When using firebase

@@ -1,3 +1,21 @@
+import { User } from "firebase/auth";
+
+/**
+ * The shape of the AuthUser is extracted from `User` object present in the firebase `UserCredential` returned from the firebase `signInWithEmailAndPassword` method inside the `authorise` method of nextAUth's auth options file,
+ */
+export interface AuthUser {
+  uid: User["uid"];
+  email: User["email"];
+  displayName: User["displayName"];
+  photoURL: User["photoURL"];
+}
+
+export interface AuthCustomError {
+  errorType: string;
+  message: string;
+  description: string;
+}
+
 export interface Genre {
   id: number;
   name: string;

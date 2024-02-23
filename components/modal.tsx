@@ -11,7 +11,6 @@ import {
 import MuiModal from "@mui/material/Modal";
 
 import React, { useState } from "react";
-import { Toaster } from "react-hot-toast";
 import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy"; //remember to make it '/lazy' for lazy loading
 import { useRecoilState } from "recoil";
@@ -31,7 +30,7 @@ function Modal() {
     genres,
   } = useGetMediaInfo({ movie });
 
-  const { isMediaUserListed, movies, handleList } = useUserListMediaActions({
+  const { isMediaUserListed, handleList } = useUserListMediaActions({
     movie,
   });
 
@@ -46,7 +45,6 @@ function Modal() {
       className="!md:top-7 fixed !top-14 left-0 right-0 z-50 mx-auto w-[94%] max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide"
     >
       <>
-        <Toaster position="bottom-center" />
         <button
           onClick={handleClose}
           className="modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:bg-[#181818]"

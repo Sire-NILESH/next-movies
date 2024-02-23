@@ -1,6 +1,6 @@
 "use client";
 
-import { Genre, MediaTrailerElement, Movie } from "@/lib/typings";
+import { Genre, MediaTrailerElement, Movie } from "@/types/typings";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 

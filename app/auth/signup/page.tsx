@@ -1,13 +1,14 @@
 "use client";
 
-import useAuth from "@/hooks/useAuth";
-import { useForm, SubmitHandler } from "react-hook-form";
-import toast, { Toaster } from "react-hot-toast";
+import useAuthHandlers from "@/hooks/useAuthHandlers";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import AuthForm from "../_components.tsx/auth-form";
-import AuthFormInput from "../_components.tsx/auth-form-input";
 import AuthFormButton from "../_components.tsx/auth-form-btn";
-import Link from "next/link";
-import { useState } from "react";
+import AuthFormInput from "../_components.tsx/auth-form-input";
+import { toastStyle } from "@/lib/constants";
 
 interface Inputs {
   email: string;
@@ -16,18 +17,16 @@ interface Inputs {
 }
 
 function Signup() {
-  const { signUp } = useAuth();
+  const {
+    signupHandler,
+    loading,
+    actionSuccess,
+    error: authErr,
+    resetAuthHandlerStates,
+  } = useAuthHandlers();
   const [showPassword, setShowPassword] = useState(false);
 
-  const toastStyle = {
-    background: "white",
-    color: "black",
-    fontWeight: "bold",
-    fontSize: "16px",
-    padding: "15px",
-    borderRadius: "9999px",
-    maxWidth: "1000px",
-  };
+  const router = useRouter();
 
   const {
     register,
@@ -49,9 +48,25 @@ function Signup() {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await signUp(data.email, data.password);
+    await signupHandler(data.email, data.password);
     reset();
   };
+
+  useEffect(() => {
+    if (actionSuccess) {
+      toast("Sign up successful, now Sign in with this new account", {
+        duration: 8000,
+        style: toastStyle,
+      });
+    }
+
+    if (authErr) {
+      toast(authErr.message, {
+        duration: 8000,
+        style: toastStyle,
+      });
+    }
+  }, [actionSuccess, authErr]);
 
   return (
     <AuthForm heading="Sign Up" onSubmit={handleSubmit(onSubmit)}>
@@ -109,18 +124,23 @@ function Signup() {
         </div>
       </div>
 
-      <AuthFormButton type="submit">Sign Up</AuthFormButton>
-
-      <Toaster position="bottom-center" />
+      <AuthFormButton disabled={loading} loading={loading} type="submit">
+        Sign Up
+      </AuthFormButton>
 
       <div className="text-[gray]">
         Already have an account?{" "}
-        <Link
+        <button
+          role="link"
+          type="button"
           className="cursor-pointer text-white hover:underline"
-          href={"/auth/signin"}
+          onClick={() => {
+            resetAuthHandlerStates();
+            router.push("/auth/signin");
+          }}
         >
           Sign in now
-        </Link>
+        </button>
       </div>
     </AuthForm>
   );

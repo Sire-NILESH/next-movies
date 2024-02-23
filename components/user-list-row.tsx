@@ -1,12 +1,15 @@
 "use client";
 
-import useAuth from "@/hooks/useAuth";
 import useList from "@/hooks/useList";
 import React from "react";
 import Row from "./row";
+import { useSession } from "next-auth/react";
 
 const UserListRow = () => {
-  const { user, loading } = useAuth();
+  const { data: session } = useSession();
+
+  const user = session?.user;
+
   const list = useList(user?.uid);
   return <> {list.length > 0 ? <Row title="My List" movies={list} /> : null}</>;
 };

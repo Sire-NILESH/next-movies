@@ -1,7 +1,7 @@
 "use server";
 
 import { allRequests, movieRequests, tvRequests } from "./requests";
-import { Movie } from "./typings";
+import { Movie } from "../types/typings";
 
 export const getHomePageProps = async () => {
   const [

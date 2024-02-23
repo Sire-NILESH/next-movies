@@ -2,7 +2,7 @@
 
 // Components that need to read from and write to an atom should use useRecoilState()
 
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 import { DocumentData } from "firebase/firestore";
 import { atom } from "recoil";
 

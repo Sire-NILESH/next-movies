@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import useAuth from "./useAuth";
+import { useEffect, useMemo, useState } from "react";
 import {
   DocumentData,
   collection,
@@ -10,37 +9,29 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 import { db } from "@/lib/firebase";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { toastStyle } from "@/lib/constants";
 
 type Props = {
   movie: Movie | DocumentData | null;
 };
 
-const toastStyle = {
-  background: "white",
-  color: "black",
-  fontWeight: "bold",
-  fontSize: "16px",
-  padding: "15px",
-  borderRadius: "9999px",
-  maxWidth: "1000px",
-};
-
 const useUserListMediaActions = ({ movie }: Props) => {
-  const { user } = useAuth();
+  const { data: session, status } = useSession();
   const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
 
   // Find all the movies in the user's list
   useEffect(() => {
-    if (user) {
+    if (session?.user) {
       return onSnapshot(
-        collection(db, "customers", user.uid, "myList"),
+        collection(db, "customers", session?.user.uid, "myList"),
         (snapshot) => setMovies(snapshot.docs)
       );
     }
-  }, [user, movie?.id]);
+  }, [session?.user, movie?.id]);
 
   // Check if the movie is already in the user's list
   const isMediaUserListed = useMemo(
@@ -49,9 +40,15 @@ const useUserListMediaActions = ({ movie }: Props) => {
   );
 
   const handleList = async () => {
-    if (isMediaUserListed) {
+    if (isMediaUserListed && session?.user?.uid) {
       await deleteDoc(
-        doc(db, "customers", user!.uid, "myList", movie?.id.toString()!)
+        doc(
+          db,
+          "customers",
+          session?.user?.uid,
+          "myList",
+          movie?.id.toString()!
+        )
       );
 
       toast(
@@ -61,9 +58,15 @@ const useUserListMediaActions = ({ movie }: Props) => {
           style: toastStyle,
         }
       );
-    } else {
+    } else if (session?.user?.uid) {
       await setDoc(
-        doc(db, "customers", user!.uid, "myList", movie?.id.toString()!),
+        doc(
+          db,
+          "customers",
+          session?.user?.uid,
+          "myList",
+          movie?.id.toString()!
+        ),
         {
           ...movie,
         }

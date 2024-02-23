@@ -1,5 +1,5 @@
 import { DocumentData } from "firebase/firestore";
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 import RowScroll from "./row-scroll";
 
 interface Props {

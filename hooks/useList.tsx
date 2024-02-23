@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/lib/firebase";
-import { Movie } from "@/lib/typings";
+import { Movie } from "@/types/typings";
 import { collection, DocumentData, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 

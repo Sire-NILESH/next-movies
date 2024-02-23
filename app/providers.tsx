@@ -1,14 +1,17 @@
-"use client"
+"use client";
 
-import { AuthProvider } from "@/hooks/useAuth";
+import { AuthHandlerProvider } from "@/hooks/useAuthHandlers";
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { RecoilRoot } from "recoil";
 
 const Providers = ({ children }: React.PropsWithChildren) => {
   return (
-    <RecoilRoot>
-      <AuthProvider>{children}</AuthProvider>
-    </RecoilRoot>
+    <SessionProvider>
+      <AuthHandlerProvider>
+        <RecoilRoot>{children}</RecoilRoot>
+      </AuthHandlerProvider>
+    </SessionProvider>
   );
 };
 
