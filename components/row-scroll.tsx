@@ -4,15 +4,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { DocumentData } from "firebase/firestore";
 import { useRef, useState } from "react";
 
-import { Movie } from "@/types/typings";
+import { Media } from "@/types/typings";
 import Thumbnail from "./thumbnail";
 
 interface Props {
   // When using firebase
-  movies: Movie[] | DocumentData[];
+  medias: Media[] | DocumentData[];
 }
 
-const RowScroll = ({ movies }: Props) => {
+const RowScroll = ({ medias }: Props) => {
   const rowRef = useRef<HTMLDivElement>(null);
   const [isMoved, setIsMoved] = useState(false);
 
@@ -44,8 +44,8 @@ const RowScroll = ({ movies }: Props) => {
         ref={rowRef}
         className="flex items-center space-x-0.5 overflow-x-scroll scrollbar-hide md:space-x-2.5 md:p-2"
       >
-        {movies.map((movie) => (
-          <Thumbnail key={movie.id} movie={movie} />
+        {medias.map((media) => (
+          <Thumbnail key={media.id} media={media} />
         ))}
       </div>
 

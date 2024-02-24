@@ -11,7 +11,7 @@ const UserListRow = () => {
   const user = session?.user;
 
   const list = useList(user?.uid);
-  return <> {list.length > 0 ? <Row title="My List" movies={list} /> : null}</>;
+  return <> {list.length > 0 ? <Row title="My List" medias={list} /> : null}</>;
 };
 
 export default UserListRow;

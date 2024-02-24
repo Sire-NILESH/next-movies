@@ -9,80 +9,93 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { Movie } from "@/types/typings";
+import { Media } from "@/types/typings";
 import { db } from "@/lib/firebase";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { toastStyle } from "@/lib/constants";
+import { toastStyle } from "@/constants/toast-styles";
 
 type Props = {
-  movie: Movie | DocumentData | null;
+  media: Media | DocumentData | null;
 };
 
-const useUserListMediaActions = ({ movie }: Props) => {
+const useUserListMediaActions = ({ media }: Props) => {
   const { data: session, status } = useSession();
-  const [movies, setMovies] = useState<DocumentData[] | Movie[]>([]);
+  const [medias, setMedias] = useState<DocumentData[] | Media[]>([]);
 
-  // Find all the movies in the user's list
+  console.log(session);
+  console.log({ medias });
+
+  // Find all the medias in the user's list
   useEffect(() => {
     if (session?.user) {
       return onSnapshot(
-        collection(db, "customers", session?.user.uid, "myList"),
-        (snapshot) => setMovies(snapshot.docs)
+        collection(db, "customers", session?.user?.uid, "myList"),
+        (snapshot) => setMedias(snapshot.docs)
       );
     }
-  }, [session?.user, movie?.id]);
+  }, [session?.user, media?.id]);
 
-  // Check if the movie is already in the user's list
+  // Check if the media is already in the user's list
   const isMediaUserListed = useMemo(
-    () => movies.findIndex((result) => result.data().id === movie?.id) !== -1,
-    [movie?.id, movies]
+    () => medias.findIndex((result) => result.data().id === media?.id) !== -1,
+    [media?.id, medias]
   );
 
   const handleList = async () => {
-    if (isMediaUserListed && session?.user?.uid) {
-      await deleteDoc(
-        doc(
-          db,
-          "customers",
-          session?.user?.uid,
-          "myList",
-          movie?.id.toString()!
-        )
-      );
+    try {
+      if (isMediaUserListed && session?.user?.uid) {
+        await deleteDoc(
+          doc(
+            db,
+            "customers",
+            session?.user?.uid,
+            "myList",
+            media?.id.toString()!
+          )
+        );
 
-      toast(
-        `${movie?.title || movie?.original_name} has been removed from My List`,
-        {
-          duration: 8000,
-          style: toastStyle,
-        }
-      );
-    } else if (session?.user?.uid) {
-      await setDoc(
-        doc(
-          db,
-          "customers",
-          session?.user?.uid,
-          "myList",
-          movie?.id.toString()!
-        ),
-        {
-          ...movie,
-        }
-      );
+        toast(
+          `${
+            media?.title || media?.original_name
+          } has been removed from My List`,
+          {
+            duration: 8000,
+            style: toastStyle,
+          }
+        );
+      } else if (session?.user?.uid) {
+        await setDoc(
+          doc(
+            db,
+            "customers",
+            session?.user?.uid,
+            "myList",
+            media?.id.toString()!
+          ),
+          {
+            ...media,
+          }
+        );
 
-      toast(
-        `${movie?.title || movie?.original_name} has been added to My List.`,
-        {
-          duration: 8000,
-          style: toastStyle,
-        }
-      );
+        toast(
+          `${media?.title || media?.original_name} has been added to My List`,
+          {
+            duration: 8000,
+            style: toastStyle,
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      toast("Failed to add item to your list", {
+        duration: 8000,
+        style: toastStyle,
+      });
     }
   };
 
-  return { isMediaUserListed, movies, handleList };
+  return { isMediaUserListed, medias, handleList };
 };
 
 export default useUserListMediaActions;

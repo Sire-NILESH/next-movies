@@ -1,29 +1,29 @@
 "use client";
 
-import { Genre, MediaTrailerElement, Movie } from "@/types/typings";
+import { Genre, MediaTrailerElement, Media } from "@/types/typings";
 import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 type Props = {
-  movie: Movie | DocumentData | null;
+  media: Media | DocumentData | null;
 };
 
-const useGetMediaInfo = ({ movie }: Props) => {
+const useGetMediaInfo = ({ media }: Props) => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [trailerLoading, setTrailerLoading] = useState<boolean>(false);
   const [trailerError, setTrailerError] = useState<boolean>(false);
   const [trailer, setTrailer] = useState<string | string[]>("");
 
   useEffect(() => {
-    if (!movie) return;
+    if (!media) return;
 
-    async function fetchMovie() {
+    async function fetchMedia() {
       setTrailerLoading(true);
 
       try {
         const url = `https://api.themoviedb.org/3/${
-          movie?.media_type ? movie?.media_type : movie?.type
-        }/${movie?.id}?api_key=${
+          media?.media_type ? media?.media_type : media?.type
+        }/${media?.id}?api_key=${
           process.env.NEXT_PUBLIC_API_KEY
         }&language=en-US&append_to_response=videos`;
 
@@ -47,8 +47,8 @@ const useGetMediaInfo = ({ movie }: Props) => {
       }
     }
 
-    fetchMovie();
-  }, [movie]);
+    fetchMedia();
+  }, [media]);
 
   return {
     trailer: { trailer, trailerLoading, trailerError },

@@ -15,23 +15,23 @@ import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy"; //remember to make it '/lazy' for lazy loading
 import { useRecoilState } from "recoil";
 
-import { modalState, movieState } from "@/atoms/appAtoms";
+import { modalState, mediaState } from "@/atoms/appAtoms";
 import useGetMediaInfo from "@/hooks/useGetMediaTrailer";
 import useUserListMediaActions from "@/hooks/useUserListMediaActions";
 import { by639_1 } from "iso-language-codes";
 
 function Modal() {
   const [showModal, setShodwModal] = useRecoilState(modalState);
-  const [movie] = useRecoilState(movieState);
+  const [media] = useRecoilState(mediaState);
   const [muted, setMuted] = useState(false);
 
   const {
     trailer: { trailer, trailerError, trailerLoading },
     genres,
-  } = useGetMediaInfo({ movie });
+  } = useGetMediaInfo({ media });
 
   const { isMediaUserListed, handleList } = useUserListMediaActions({
-    movie,
+    media,
   });
 
   const handleClose = () => {
@@ -106,17 +106,17 @@ function Modal() {
           <div className="space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
-                {(movie!.vote_average * 10).toFixed(2)}% Match
+                {(media!.vote_average * 10).toFixed(2)}% Match
               </p>
               <p className="font-light">
-                {movie?.release_date || movie?.first_air_date}
+                {media?.release_date || media?.first_air_date}
               </p>
               <div className="flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-xs">
                 HD
               </div>
             </div>
             <div className="flex flex-col gap-x-10 gap-y-4 font-light md:flex-row">
-              <p className="text-base md:w-5/6">{movie?.overview}</p>
+              <p className="text-base md:w-5/6">{media?.overview}</p>
               <div className="flex flex-col space-y-3 text-sm">
                 <div>
                   <span className="text-[gray]">Genres:</span>{" "}
@@ -127,16 +127,16 @@ function Modal() {
                   <span className="text-[gray]">Language:</span>{" "}
                   {
                     // @ts-ignore
-                    by639_1[movie?.original_language].name
+                    by639_1[media?.original_language].name
                       ? // @ts-ignore
-                        by639_1[movie?.original_language].name
+                        by639_1[media?.original_language].name
                       : "unknown"
                   }
                 </div>
 
                 <div>
                   <span className="text-[gray]">Total votes:</span>{" "}
-                  {movie?.vote_count}
+                  {media?.vote_count}
                 </div>
               </div>
             </div>

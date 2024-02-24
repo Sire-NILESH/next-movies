@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import AuthForm from "../_components.tsx/auth-form";
 import AuthFormButton from "../_components.tsx/auth-form-btn";
 import AuthFormInput from "../_components.tsx/auth-form-input";
-import { toastStyle } from "@/lib/constants";
+import { toastStyle } from "@/constants/toast-styles";
 
 interface Inputs {
   email: string;

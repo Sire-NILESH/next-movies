@@ -2,25 +2,25 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { baseUrl } from "../constants/movie";
+import { baseUrl } from "../constants/media";
 
 import { FaPlay } from "react-icons/fa";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { useRecoilState } from "recoil";
-import { Movie } from "@/types/typings";
-import { modalState, movieState } from "@/atoms/appAtoms";
+import { Media } from "@/types/typings";
+import { modalState, mediaState } from "@/atoms/appAtoms";
 
 interface Props {
-  netflixOriginals: Movie[];
+  netflixOriginals: Media[];
 }
 
 function Banner({ netflixOriginals }: Props) {
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [media, setMedia] = useState<Media | null>(null);
   const [_showModal, setShowModal] = useRecoilState(modalState);
-  const [_, setCurrentMovie] = useRecoilState(movieState);
+  const [_, setCurrentMedia] = useRecoilState(mediaState);
 
   useEffect(() => {
-    setMovie(
+    setMedia(
       netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
     );
   }, [netflixOriginals]);
@@ -30,18 +30,18 @@ function Banner({ netflixOriginals }: Props) {
       <div className="absolute top-0 left-0 -z-10 h-[95vh] w-screen">
         <Image
           priority
-          src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
+          src={`${baseUrl}${media?.backdrop_path || media?.poster_path}`}
           fill={true}
           className="object-cover"
-          alt={movie?.name ?? "movie banner"}
+          alt={media?.name ?? "media banner"}
         />
       </div>
 
       <h1 className="text-2xl font-bold md:text-4xl lg:text-7xl line-clamp-2">
-        {movie?.title ?? movie?.name ?? movie?.original_name}
+        {media?.title ?? media?.name ?? media?.original_name}
       </h1>
       <p className="max-w-xs text-xs text-shadow-md md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl line-clamp-5">
-        {movie?.overview}
+        {media?.overview}
       </p>
 
       <div className="flex space-x-3">
@@ -52,7 +52,7 @@ function Banner({ netflixOriginals }: Props) {
         <button
           className="bannerButton bg-[gray]/70"
           onClick={() => {
-            setCurrentMovie(movie);
+            setCurrentMedia(media);
             setShowModal(true);
           }}
         >

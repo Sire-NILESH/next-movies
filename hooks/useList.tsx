@@ -1,12 +1,12 @@
 "use client";
 
 import { db } from "@/lib/firebase";
-import { Movie } from "@/types/typings";
+import { Media } from "@/types/typings";
 import { collection, DocumentData, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 function useList(uid: string | undefined) {
-  const [list, setList] = useState<DocumentData[] | Movie[]>([]);
+  const [list, setList] = useState<DocumentData[] | Media[]>([]);
 
   useEffect(() => {
     if (!uid) return;

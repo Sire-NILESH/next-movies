@@ -12,15 +12,15 @@ const MoviesPage = async () => {
       <Banner netflixOriginals={data.netflixOriginals} />
 
       <section className="md:space-y-24">
-        <Row title="Trending Now" movies={data.trendingNow} />
-        <Row title="Top Rated" movies={data.topRated} />
-        <Row title="Action Thrillers" movies={data.actionMovies} />
+        <Row title="Trending Now" medias={data.trendingNow} />
+        <Row title="Top Rated" medias={data.topRated} />
+        <Row title="Action Thrillers" medias={data.actionMovies} />
         {/* My List */}
         <UserListRow />
-        <Row title="Comedies" movies={data.comedyMovies} />
-        <Row title="Scary Movies" movies={data.horrorMovies} />
-        <Row title="Romance Movies" movies={data.romanceMovies} />
-        <Row title="Documentaries" movies={data.documentaries} />
+        <Row title="Comedies" medias={data.comedyMovies} />
+        <Row title="Scary Movies" medias={data.horrorMovies} />
+        <Row title="Romance Movies" medias={data.romanceMovies} />
+        <Row title="Documentaries" medias={data.documentaries} />
       </section>
     </>
   );

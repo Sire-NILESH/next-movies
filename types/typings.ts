@@ -21,7 +21,7 @@ export interface Genre {
   name: string;
 }
 
-export interface Movie {
+export interface Media {
   title: string;
   backdrop_path: string;
   media_type?: string | string[];

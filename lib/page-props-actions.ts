@@ -1,7 +1,7 @@
 "use server";
 
 import { allRequests, movieRequests, tvRequests } from "./requests";
-import { Movie } from "../types/typings";
+import { Media } from "../types/typings";
 
 export const getHomePageProps = async () => {
   const [
@@ -24,16 +24,16 @@ export const getHomePageProps = async () => {
     fetch(allRequests.fetchDocumentaries).then((res) => res.json()),
   ]);
 
-  netflixOriginals.results?.forEach((content: Movie) => (content.type = "tv"));
+  netflixOriginals.results?.forEach((content: Media) => (content.type = "tv"));
   trendingNow.results?.forEach(
-    (content: Movie) => (content.type = content.media_type)
+    (content: Media) => (content.type = content.media_type)
   );
-  topRated.results?.forEach((content: Movie) => (content.type = "movie"));
-  actionMovies.results?.forEach((content: Movie) => (content.type = "movie"));
-  comedyMovies.results?.forEach((content: Movie) => (content.type = "tv"));
-  horrorMovies.results?.forEach((content: Movie) => (content.type = "movie"));
-  romanceMovies.results?.forEach((content: Movie) => (content.type = "tv"));
-  documentaries.results?.forEach((content: Movie) => (content.type = "tv"));
+  topRated.results?.forEach((content: Media) => (content.type = "movie"));
+  actionMovies.results?.forEach((content: Media) => (content.type = "movie"));
+  comedyMovies.results?.forEach((content: Media) => (content.type = "tv"));
+  horrorMovies.results?.forEach((content: Media) => (content.type = "movie"));
+  romanceMovies.results?.forEach((content: Media) => (content.type = "tv"));
+  documentaries.results?.forEach((content: Media) => (content.type = "tv"));
 
   return {
     netflixOriginals: netflixOriginals.results,
@@ -69,15 +69,15 @@ export const getMoviePageProps = async () => {
   ]);
 
   netflixOriginals.results.forEach(
-    (content: Movie) => (content.type = "movie")
+    (content: Media) => (content.type = "movie")
   );
-  trendingNow.results.forEach((content: Movie) => (content.type = "movie"));
-  topRated.results.forEach((content: Movie) => (content.type = "movie"));
-  actionMovies.results.forEach((content: Movie) => (content.type = "movie"));
-  comedyMovies.results.forEach((content: Movie) => (content.type = "movie"));
-  horrorMovies.results.forEach((content: Movie) => (content.type = "movie"));
-  romanceMovies.results.forEach((content: Movie) => (content.type = "movie"));
-  documentaries.results.forEach((content: Movie) => (content.type = "movie"));
+  trendingNow.results.forEach((content: Media) => (content.type = "movie"));
+  topRated.results.forEach((content: Media) => (content.type = "movie"));
+  actionMovies.results.forEach((content: Media) => (content.type = "movie"));
+  comedyMovies.results.forEach((content: Media) => (content.type = "movie"));
+  horrorMovies.results.forEach((content: Media) => (content.type = "movie"));
+  romanceMovies.results.forEach((content: Media) => (content.type = "movie"));
+  documentaries.results.forEach((content: Media) => (content.type = "movie"));
 
   return {
     netflixOriginals: netflixOriginals.results,
@@ -112,14 +112,14 @@ export const getTvShowsPageProps = async () => {
     fetch(tvRequests.fetchDocumentaries).then((res) => res.json()),
   ]);
 
-  netflixOriginals.results.forEach((content: Movie) => (content.type = "tv"));
-  trendingNow.results.forEach((content: Movie) => (content.type = "tv"));
-  topRated.results.forEach((content: Movie) => (content.type = "tv"));
-  sciFiShows.results.forEach((content: Movie) => (content.type = "tv"));
-  comedyShows.results.forEach((content: Movie) => (content.type = "tv"));
-  mysteryShows.results.forEach((content: Movie) => (content.type = "tv"));
-  romanceShows.results.forEach((content: Movie) => (content.type = "tv"));
-  documentaries.results.forEach((content: Movie) => (content.type = "tv"));
+  netflixOriginals.results.forEach((content: Media) => (content.type = "tv"));
+  trendingNow.results.forEach((content: Media) => (content.type = "tv"));
+  topRated.results.forEach((content: Media) => (content.type = "tv"));
+  sciFiShows.results.forEach((content: Media) => (content.type = "tv"));
+  comedyShows.results.forEach((content: Media) => (content.type = "tv"));
+  mysteryShows.results.forEach((content: Media) => (content.type = "tv"));
+  romanceShows.results.forEach((content: Media) => (content.type = "tv"));
+  documentaries.results.forEach((content: Media) => (content.type = "tv"));
 
   return {
     netflixOriginals: netflixOriginals.results,
