@@ -1,14 +1,12 @@
 "use client";
 
+import { mediaState, modalState } from "@/atoms/appAtoms";
+import { Media } from "@/types/typings";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
-import { DocumentData } from "firebase/firestore";
-import { modalState, mediaState } from "@/atoms/appAtoms";
-import { Media } from "@/types/typings";
 
 interface Props {
-  // When using firebase
-  media: Media | DocumentData;
+  media: Media;
 }
 
 function Thumbnail({ media }: Props) {
@@ -31,7 +29,7 @@ function Thumbnail({ media }: Props) {
         className="object-cover"
         fill={true}
         sizes="(max-width: 768px) 260px, 260px"
-        alt={media.name ?? media.title}
+        alt={media.name ?? media.title ?? "media"}
       />
     </div>
   );

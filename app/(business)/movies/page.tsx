@@ -2,7 +2,6 @@ import Banner from "@/components/banner";
 import Row from "@/components/row";
 import UserListRow from "@/components/user-list-row";
 import { getMoviePageProps } from "@/lib/page-props-actions";
-import React, { Suspense } from "react";
 
 const MoviesPage = async () => {
   const data = await getMoviePageProps();

@@ -1,21 +1,11 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { signIn, signOut } from "next-auth/react";
-import {
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useRouter } from "next/navigation";
+import { signUpAction } from "@/lib/actions/authActions";
 import { customiseAuthError } from "@/lib/auth-err-handler";
-import { FirebaseError } from "firebase/app";
+import { TSignUpSchema } from "@/lib/validationSchemas";
+import { signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 export interface CustomError {
   errorType: "Firebase auth createUserWithEmailAndPassword Error" | string;
@@ -25,7 +15,12 @@ export interface CustomError {
 
 interface Auth {
   signinHandler: (email: string, password: string) => Promise<void>;
-  signupHandler: (email: string, password: string) => Promise<void>;
+  signupHandler: ({
+    email,
+    password,
+    confirmPassword,
+    name,
+  }: TSignUpSchema) => Promise<void>;
   signoutHandler: () => Promise<void>;
   resetAuthHandlerStates: () => void;
   error: null | CustomError;
@@ -71,36 +66,55 @@ export const AuthHandlerProvider = ({
           callbackUrl: "/",
         });
 
-        if (signInResponse && signInResponse.ok) {
+        if (signInResponse?.ok) {
           setActionSuccess(true);
           router.push(signInResponse.url ? signInResponse.url : "/");
-        } else if (signInResponse && signInResponse.error) {
+        } else if (signInResponse?.error) {
           setActionSuccess(false);
           setError(customiseAuthError(signInResponse.error));
         }
       }
     } catch (error) {
+      console.error(error);
       setError(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const signupHandler = async (email: string, password: string) => {
+  const signupHandler = async ({
+    email,
+    password,
+    confirmPassword,
+    name,
+  }: TSignUpSchema) => {
     try {
       setLoading(true);
       setError(null);
       setActionSuccess(false);
 
       if (email) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const signupResponse = await signUpAction({
+          email,
+          password,
+          name,
+          confirmPassword,
+        });
+
+        if (signupResponse.error) {
+          setActionSuccess(false);
+          setError(customiseAuthError(signupResponse.error));
+          return;
+        }
+
         setActionSuccess(true);
+
         // router.push("/signin");
       }
     } catch (error) {
+      console.error(error);
       setActionSuccess(false);
-      const err = error as FirebaseError;
-      setError(customiseAuthError(err.code));
+      setError(customiseAuthError(error));
     } finally {
       setLoading(false);
     }

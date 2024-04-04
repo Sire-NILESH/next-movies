@@ -1,7 +1,7 @@
 "use server";
 
-import { allRequests, movieRequests, tvRequests } from "./requests";
 import { Media } from "../types/typings";
+import { allRequests, movieRequests, tvRequests } from "./requests";
 
 export const getHomePageProps = async () => {
   const [
@@ -26,7 +26,12 @@ export const getHomePageProps = async () => {
 
   netflixOriginals.results?.forEach((content: Media) => (content.type = "tv"));
   trendingNow.results?.forEach(
-    (content: Media) => (content.type = content.media_type)
+    (content: Media) =>
+      (content.type = content.media_type
+        ? content.media_type
+        : content.name || content.original_name
+        ? "tv"
+        : "movie")
   );
   topRated.results?.forEach((content: Media) => (content.type = "movie"));
   actionMovies.results?.forEach((content: Media) => (content.type = "movie"));

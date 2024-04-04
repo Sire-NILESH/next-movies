@@ -3,7 +3,6 @@
 // Components that need to read from and write to an atom should use useRecoilState()
 
 import { Media } from "@/types/typings";
-import { DocumentData } from "firebase/firestore";
 import { atom } from "recoil";
 
 export const modalState = atom({
@@ -11,7 +10,12 @@ export const modalState = atom({
   default: false,
 });
 
-export const mediaState = atom<Media | DocumentData | null>({
+export const mediaState = atom<Media | null>({
   key: "mediaState",
   default: null,
+});
+
+export const userListState = atom<Media[]>({
+  key: "userListState",
+  default: [],
 });

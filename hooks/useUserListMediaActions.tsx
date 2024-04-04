@@ -1,60 +1,48 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  DocumentData,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  setDoc,
-} from "firebase/firestore";
-import { Media } from "@/types/typings";
-import { db } from "@/lib/firebase";
-import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { userListState } from "@/atoms/appAtoms";
 import { toastStyle } from "@/constants/toast-styles";
+import {
+  addMediaToListAction,
+  deleteMediaFromListAction,
+} from "@/lib/actions/userListActions";
+import { getMediaName } from "@/lib/helpers";
+import { Media } from "@/types/typings";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
+import toast from "react-hot-toast";
+import { useRecoilState } from "recoil";
 
 type Props = {
-  media: Media | DocumentData | null;
+  media: Media | null;
 };
 
 const useUserListMediaActions = ({ media }: Props) => {
-  const { data: session, status } = useSession();
-  const [medias, setMedias] = useState<DocumentData[] | Media[]>([]);
-
-  console.log(session);
-  console.log({ medias });
-
-  // Find all the medias in the user's list
-  useEffect(() => {
-    if (session?.user) {
-      return onSnapshot(
-        collection(db, "customers", session?.user?.uid, "myList"),
-        (snapshot) => setMedias(snapshot.docs)
-      );
-    }
-  }, [session?.user, media?.id]);
+  const { data: session } = useSession();
+  const [userList, setUserList] = useRecoilState(userListState);
 
   // Check if the media is already in the user's list
   const isMediaUserListed = useMemo(
-    () => medias.findIndex((result) => result.data().id === media?.id) !== -1,
-    [media?.id, medias]
+    () => userList.findIndex((result) => result.id === media?.id) !== -1,
+    [media?.id, userList]
   );
 
   const handleList = async () => {
     try {
-      if (isMediaUserListed && session?.user?.uid) {
-        await deleteDoc(
-          doc(
-            db,
-            "customers",
-            session?.user?.uid,
-            "myList",
-            media?.id.toString()!
-          )
-        );
+      if (isMediaUserListed && session?.user && media) {
+        toast("Removing...", {
+          duration: 8000,
+          style: toastStyle,
+        });
 
+        const res = await deleteMediaFromListAction({
+          mediaId: media.id,
+          mediaType: media.type,
+        });
+
+        if (res?.error) throw new Error(res.error);
+
+        setUserList((prev) => [...prev.filter((item) => item.id !== media.id)]);
         toast(
           `${
             media?.title || media?.original_name
@@ -64,38 +52,43 @@ const useUserListMediaActions = ({ media }: Props) => {
             style: toastStyle,
           }
         );
-      } else if (session?.user?.uid) {
-        await setDoc(
-          doc(
-            db,
-            "customers",
-            session?.user?.uid,
-            "myList",
-            media?.id.toString()!
-          ),
-          {
-            ...media,
-          }
-        );
+      } else if (session?.user && media) {
+        toast("Adding...", {
+          duration: 8000,
+          style: toastStyle,
+        });
 
-        toast(
-          `${media?.title || media?.original_name} has been added to My List`,
-          {
-            duration: 8000,
-            style: toastStyle,
-          }
-        );
+        const res = await addMediaToListAction({ media });
+
+        if (res?.error) throw new Error(res.error);
+
+        setUserList((prev) => [...prev, media]);
+        toast(`${getMediaName(media)} has been added to My List`, {
+          duration: 8000,
+          style: toastStyle,
+        });
       }
     } catch (error) {
-      console.log(error);
-      toast("Failed to add item to your list", {
+      toast("Something went wrong", {
         duration: 8000,
         style: toastStyle,
       });
+
+      // if (error instanceof Error) {
+      //   toast("Something went wrong", {
+      //     duration: 8000,
+      //     style: toastStyle,
+      //   });
+      // } else {
+      //   toast(error as string, {
+      //     duration: 8000,
+      //     style: toastStyle,
+      //   });
+      // }
     }
   };
 
-  return { isMediaUserListed, medias, handleList };
+  return { isMediaUserListed, handleList };
 };
 
 export default useUserListMediaActions;

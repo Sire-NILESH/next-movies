@@ -1,15 +1,13 @@
 "use client";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import { DocumentData } from "firebase/firestore";
 import { useRef, useState } from "react";
 
 import { Media } from "@/types/typings";
 import Thumbnail from "./thumbnail";
 
 interface Props {
-  // When using firebase
-  medias: Media[] | DocumentData[];
+  medias: Media[];
 }
 
 const RowScroll = ({ medias }: Props) => {

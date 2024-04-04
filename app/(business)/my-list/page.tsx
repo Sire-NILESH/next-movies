@@ -1,5 +1,4 @@
 import UserListRow from "@/components/user-list-row";
-import React from "react";
 
 const MyListpage = () => {
   return (

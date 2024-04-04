@@ -15,9 +15,10 @@ import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy"; //remember to make it '/lazy' for lazy loading
 import { useRecoilState } from "recoil";
 
-import { modalState, mediaState } from "@/atoms/appAtoms";
+import { mediaState, modalState } from "@/atoms/appAtoms";
 import useGetMediaInfo from "@/hooks/useGetMediaTrailer";
 import useUserListMediaActions from "@/hooks/useUserListMediaActions";
+import { getMediaName } from "@/lib/helpers";
 import { by639_1 } from "iso-language-codes";
 
 function Modal() {
@@ -104,9 +105,14 @@ function Modal() {
 
         <div className="flex space-x-16 rounded-b-md bg-[#181818] px-4 py-8 md:px-10">
           <div className="space-y-6 text-lg">
+            <p className="font-semibold line-clamp-2">{getMediaName(media)}</p>
+
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
-                {(media!.vote_average * 10).toFixed(2)}% Match
+                {media?.vote_average
+                  ? (media?.vote_average * 10).toFixed(2)
+                  : 0}
+                % Match
               </p>
               <p className="font-light">
                 {media?.release_date || media?.first_air_date}
@@ -114,14 +120,19 @@ function Modal() {
               <div className="flex h-4 items-center justify-center rounded border border-white/40 px-1.5 text-xs">
                 HD
               </div>
+              <p>{media?.type.toUpperCase()}</p>
             </div>
             <div className="flex flex-col gap-x-10 gap-y-4 font-light md:flex-row">
-              <p className="text-base md:w-5/6">{media?.overview}</p>
+              {media?.overview ? (
+                <p className="text-base md:w-5/6">{media?.overview}</p>
+              ) : null}
               <div className="flex flex-col space-y-3 text-sm">
-                <div>
-                  <span className="text-[gray]">Genres:</span>{" "}
-                  {genres.map((genre) => genre.name).join(", ")}
-                </div>
+                {genres && (
+                  <div>
+                    <span className="text-[gray]">Genres:</span>{" "}
+                    {genres.map((genre) => genre.name).join(", ")}
+                  </div>
+                )}
 
                 <div>
                   <span className="text-[gray]">Language:</span>{" "}

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
   return (

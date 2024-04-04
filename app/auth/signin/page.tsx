@@ -2,7 +2,10 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { toastStyle } from "@/constants/toast-styles";
 import useAuthHandlers from "@/hooks/useAuthHandlers";
+import { SignInSchema, TSignInSchema } from "@/lib/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,12 +13,6 @@ import toast from "react-hot-toast";
 import AuthForm from "../_components.tsx/auth-form";
 import AuthFormButton from "../_components.tsx/auth-form-btn";
 import AuthFormInput from "../_components.tsx/auth-form-input";
-import { toastStyle } from "@/constants/toast-styles";
-
-interface Inputs {
-  email: string;
-  password: string;
-}
 
 function Signin() {
   const {
@@ -36,8 +33,9 @@ function Signin() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<TSignInSchema>({
     mode: "onBlur",
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -48,7 +46,7 @@ function Signin() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<TSignInSchema> = async (data) => {
     await signinHandler(data.email, data.password);
     reset();
   };
@@ -77,7 +75,7 @@ function Signin() {
             type="email"
             placeholder="Email"
             validationErr={errors.email}
-            errorMsg="Please enter a valid email."
+            // errorMsg="Please enter a valid email."
             {...register("email", { required: true })}
           />
         </label>
@@ -87,7 +85,7 @@ function Signin() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             validationErr={errors.password}
-            errorMsg="Your password must be between 6 to 14 characters only."
+            // errorMsg="Your password must be between 6 to 14 characters only."
             {...register("password", {
               required: true,
               minLength: 6,

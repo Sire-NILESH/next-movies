@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from "react";
 import Header from "@/components/header";
 import LayoutWideModal from "@/components/layout-wide-modal";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/_components/auth-options";
 import { redirect } from "next/navigation";
+import { PropsWithChildren } from "react";
+import { authOptions } from "../api/auth/[...nextauth]/components/auth-options";
 
 const BusinessLogicPagesLayout = async ({ children }: PropsWithChildren) => {
   const session = await getServerSession(authOptions);

@@ -1,11 +1,9 @@
-import { DocumentData } from "firebase/firestore";
 import { Media } from "@/types/typings";
 import RowScroll from "./row-scroll";
 
 interface Props {
   title: string;
-  // When using firebase
-  medias: Media[] | DocumentData[];
+  medias: Media[];
 }
 
 function Row({ title, medias }: Props) {

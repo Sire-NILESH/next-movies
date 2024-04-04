@@ -1,12 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import React, { ComponentPropsWithRef, forwardRef } from "react";
+import { ComponentPropsWithRef, forwardRef } from "react";
 import { FieldError } from "react-hook-form";
 
 type AuthFormInputProps = ComponentPropsWithRef<"input"> & {
   validationErr: FieldError | undefined;
-  errorMsg: string | undefined;
+  errorMsg?: string | undefined;
 };
 
 const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
@@ -30,7 +30,8 @@ const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
         />
         {validationErr && (
           <p className="p-1 text-[13px] font-light  text-orange-500">
-            {errorMsg ? errorMsg : "Invalid input"}
+            {/* {errorMsg ? errorMsg : "Invalid input"} */}
+            {validationErr.message ? validationErr.message : "Invalid input"}
           </p>
         )}
       </div>

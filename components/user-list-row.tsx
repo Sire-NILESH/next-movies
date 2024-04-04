@@ -1,17 +1,15 @@
 "use client";
 
-import useList from "@/hooks/useList";
-import React from "react";
-import Row from "./row";
-import { useSession } from "next-auth/react";
+import LoadUserList from "./load-user-list";
+import UserListRow2 from "./user-list-row-2";
 
 const UserListRow = () => {
-  const { data: session } = useSession();
-
-  const user = session?.user;
-
-  const list = useList(user?.uid);
-  return <> {list.length > 0 ? <Row title="My List" medias={list} /> : null}</>;
+  return (
+    <>
+      <LoadUserList />
+      <UserListRow2 />
+    </>
+  );
 };
 
 export default UserListRow;

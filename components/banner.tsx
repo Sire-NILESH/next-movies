@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { baseUrl } from "../constants/media";
 
-import { FaPlay } from "react-icons/fa";
-import { InformationCircleIcon } from "@heroicons/react/solid";
-import { useRecoilState } from "recoil";
+import { mediaState, modalState } from "@/atoms/appAtoms";
 import { Media } from "@/types/typings";
-import { modalState, mediaState } from "@/atoms/appAtoms";
+import { InformationCircleIcon } from "@heroicons/react/solid";
+import { FaPlay } from "react-icons/fa";
+import { useRecoilState } from "recoil";
 
 interface Props {
   netflixOriginals: Media[];
@@ -37,7 +37,7 @@ function Banner({ netflixOriginals }: Props) {
         />
       </div>
 
-      <h1 className="text-2xl font-bold md:text-4xl lg:text-7xl line-clamp-2">
+      <h1 className="md:h-16 lg:h-28 md:py-4 text-2xl font-bold md:text-4xl lg:text-7xl line-clamp-2">
         {media?.title ?? media?.name ?? media?.original_name}
       </h1>
       <p className="max-w-xs text-xs text-shadow-md md:max-w-lg md:text-lg lg:max-w-2xl lg:text-2xl line-clamp-5">

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import React, { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
 type AuthFormProps = ComponentPropsWithoutRef<"form"> & {
   heading?: string;

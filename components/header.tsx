@@ -1,9 +1,9 @@
 import { BellIcon, SearchIcon } from "@heroicons/react/solid";
 
-import Image from "next/image";
-import BasicMenu from "./basic-menu";
 import { menueItems } from "@/constants/stite";
+import Image from "next/image";
 import Link from "next/link";
+import BasicMenu from "./basic-menu";
 import HeaderWrapper from "./header-wrapper";
 import UserProfile from "./user-profile";
 

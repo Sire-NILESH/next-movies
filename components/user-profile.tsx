@@ -3,7 +3,7 @@
 import useAuthHandlers from "@/hooks/useAuthHandlers";
 import { cn } from "@/lib/cn";
 import Image from "next/image";
-import React, { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
 type UserProfileProps = ComponentPropsWithoutRef<"div">;
 

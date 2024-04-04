@@ -1,30 +1,36 @@
 "use client";
 
-import { db } from "@/lib/firebase";
-import { Media } from "@/types/typings";
-import { collection, DocumentData, onSnapshot } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { userListState } from "@/atoms/appAtoms";
+import { getUserListMediasAction } from "@/lib/actions/userListActions";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
 
-function useList(uid: string | undefined) {
-  const [list, setList] = useState<DocumentData[] | Media[]>([]);
+function useList() {
+  const [_, setUserList] = useRecoilState(userListState);
 
+  // Find all the medias in the user's list
   useEffect(() => {
-    if (!uid) return;
+    let ignore = false;
 
-    return onSnapshot(
-      collection(db, "customers", uid, "myList"),
-      (snapshot) => {
-        setList(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        );
-      }
-    );
-  }, [uid]);
+    getUserList();
 
-  return list;
+    async function getUserList() {
+      try {
+        const list = await getUserListMediasAction();
+
+        if (list?.error) throw new Error(list.error);
+
+        if (list?.data && !ignore) {
+          setUserList([...list.data]);
+        }
+      } catch (error) {}
+    }
+
+    // cleanup
+    return () => {
+      ignore = true;
+    };
+  }, [setUserList]);
 }
 
 export default useList;

@@ -1,6 +1,9 @@
 "use client";
 
+import { toastStyle } from "@/constants/toast-styles";
 import useAuthHandlers from "@/hooks/useAuthHandlers";
+import { SignUpSchema, TSignUpSchema } from "@/lib/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -8,13 +11,6 @@ import toast from "react-hot-toast";
 import AuthForm from "../_components.tsx/auth-form";
 import AuthFormButton from "../_components.tsx/auth-form-btn";
 import AuthFormInput from "../_components.tsx/auth-form-input";
-import { toastStyle } from "@/constants/toast-styles";
-
-interface Inputs {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
 
 function Signup() {
   const {
@@ -34,10 +30,12 @@ function Signup() {
     reset,
     watch,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<TSignUpSchema>({
     mode: "onBlur",
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",
+      name: "",
       password: "",
       confirmPassword: "",
     },
@@ -47,8 +45,13 @@ function Signup() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await signupHandler(data.email, data.password);
+  const onSubmit: SubmitHandler<TSignUpSchema> = async (data) => {
+    await signupHandler({
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+    });
     reset();
   };
 
@@ -73,10 +76,22 @@ function Signup() {
       <div className="space-y-4">
         <label className="inline-block w-full">
           <AuthFormInput
+            type="string"
+            placeholder="Name"
+            validationErr={errors.name}
+            // errorMsg="Please enter a valid name."
+            {...register("name", {
+              required: true,
+            })}
+          />
+        </label>
+
+        <label className="inline-block w-full">
+          <AuthFormInput
             type="email"
             placeholder="Email"
             validationErr={errors.email}
-            errorMsg="Please enter a valid email."
+            // errorMsg="Please enter a valid email."
             {...register("email", {
               required: true,
               pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i,
@@ -89,7 +104,7 @@ function Signup() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             validationErr={errors.password}
-            errorMsg="Your password must contain between 6 and 14 characters."
+            // errorMsg="Your password must contain between 6 and 14 characters."
             {...register("password", {
               required: true,
               minLength: 6,
