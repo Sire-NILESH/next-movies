@@ -1,6 +1,6 @@
 import { MediaType } from "@prisma/client";
 
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_KEY = process.env.NEXT_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export const tvRequests = {
@@ -35,4 +35,4 @@ export const movieRequests = {
 };
 
 export const mediaDetailRequest = (mediaId: number, mediaType: MediaType) =>
-  `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US&append_to_response=videos`;
+  `https://api.themoviedb.org/3/${mediaType}/${mediaId}?api_key=${process.env.NEXT_API_KEY}&language=en-US&append_to_response=videos`;
