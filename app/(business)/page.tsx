@@ -14,8 +14,10 @@ const HomePage = async () => {
         <Row title="Comedies" medias={data.comedyMovies} />
         <Row title="Top Rated" medias={data.topRated} />
         <Row title="Documentaries" medias={data.documentaries} />
+
         {/* My List */}
         <UserListRow />
+
         <Row title="Action Thrillers" medias={data.actionMovies} />
         <Row title="Scary Movies" medias={data.horrorMovies} />
         <Row title="Romance Movies" medias={data.romanceMovies} />

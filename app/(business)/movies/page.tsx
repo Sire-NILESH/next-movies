@@ -19,8 +19,10 @@ const MoviesPage = async () => {
         <Row title="Trending Now" medias={data.trendingNow} />
         <Row title="Top Rated" medias={data.topRated} />
         <Row title="Action Thrillers" medias={data.actionMovies} />
+
         {/* My List */}
         <UserListRow />
+
         <Row title="Comedies" medias={data.comedyMovies} />
         <Row title="Scary Movies" medias={data.horrorMovies} />
         <Row title="Romance Movies" medias={data.romanceMovies} />

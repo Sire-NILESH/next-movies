@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
     const response = await fetch(
       mediaDetailRequest(Number(mediaId), mediaType)
     );
+
     const data = await response.json();
 
     const mediaDetails = {
@@ -57,6 +58,7 @@ export async function GET(req: NextRequest) {
 
       mediaDetails.trailer = data.videos?.results[index]?.key;
     }
+
     if (data?.genres) {
       mediaDetails.genres = data.genres;
     }

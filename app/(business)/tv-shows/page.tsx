@@ -18,8 +18,10 @@ const TvShowsPage = async () => {
         <Row title="Sci-fi and Fantasy" medias={data.sciFiShows} />
         <Row title="Top Rated" medias={data.topRated} />
         <Row title="Documentaries" medias={data.documentaries} />
+
         {/* My List */}
         <UserListRow />
+        
         <Row title="Comedies" medias={data.comedyShows} />
         <Row title="Mystery" medias={data.mysteryShows} />
         <Row title="Romance" medias={data.romanceShows} />
