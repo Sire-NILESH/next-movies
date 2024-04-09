@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs";
 import { getServerSession } from "next-auth";
 import AppError from "../app-error";
 import db from "../db/prisma";
-import { prismaExclude } from "../helpers";
+import { prismaExclude } from "../helpers-server-side";
 import { SignUpSchema, TSignUpSchema } from "../validationSchemas";
 import {
   handleActionErrResponse,

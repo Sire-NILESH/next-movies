@@ -1,26 +1,18 @@
 import { BellIcon, SearchIcon } from "@heroicons/react/solid";
 
 import { menueItems } from "@/constants/stite";
-import Image from "next/image";
 import Link from "next/link";
 import BasicMenu from "./basic-menu";
 import HeaderWrapper from "./header-wrapper";
-import UserProfile from "./user-profile";
+import AvatarMenu from "./avatar-menu";
+import Logo from "./logo";
 
 function Header() {
   return (
     <HeaderWrapper>
       <div>
         <div className="flex items-center space-x-2 md:space-x-10">
-          <Link href="/">
-            <Image
-              src="https://rb.gy/ulxxee"
-              width={100}
-              height={32}
-              alt={"logo"}
-              className="cursor-pointer object-contain"
-            />
-          </Link>
+          <Logo />
 
           <BasicMenu />
 
@@ -39,7 +31,7 @@ function Header() {
         <p className="hidden lg:inline">Kids</p>
         <BellIcon className="h-6 w-6" />
 
-        <UserProfile />
+        <AvatarMenu />
       </div>
     </HeaderWrapper>
   );

@@ -1,14 +1,17 @@
 "use client";
 
-import { menueItems } from "@/constants/stite";
+import { TbLogout2 } from "react-icons/tb";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Link from "next/link";
 import { useState } from "react";
+import UserProfile from "./user-profile";
+import useAuthHandlers from "@/hooks/useAuthHandlers";
 
-export default function BasicMenu() {
+export default function AvatarMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { signoutHandler } = useAuthHandlers();
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,32 +23,32 @@ export default function BasicMenu() {
   };
 
   return (
-    <div className="md:!hidden">
+    <div className="">
       <Button
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
+        id="avatar-button"
+        aria-controls={open ? "avatar-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         className="!capitalize !text-white"
       >
-        Browse
+        <UserProfile />
       </Button>
       <Menu
-        id="basic-menu"
+        id="avatar-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        className="menu md:hidden"
+        className="menu"
         MenuListProps={{
-          "aria-labelledby": "basic-button",
+          "aria-labelledby": "avatar-button",
         }}
       >
-        {menueItems.map((menuItem, i) => (
-          <Link key={i} href={menuItem.path}>
-            <MenuItem>{menuItem.name}</MenuItem>
-          </Link>
-        ))}
+        <MenuItem onClick={signoutHandler}>
+          <div className="flex items-center space-x-2">
+            <TbLogout2 size={24} /> <span>Logout</span>
+          </div>
+        </MenuItem>
       </Menu>
     </div>
   );

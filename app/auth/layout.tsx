@@ -1,7 +1,8 @@
+import Logo from "@/components/logo";
 import Image from "next/image";
-import { PropsWithChildren } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
-const AuthLayout = ({ children }: PropsWithChildren) => {
+const AuthLayout = ({ children }: ComponentPropsWithoutRef<"div">) => {
   return (
     <div className="relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent">
       <Image
@@ -11,13 +12,8 @@ const AuthLayout = ({ children }: PropsWithChildren) => {
         objectFit="cover"
         alt="background banner"
       />
-      <Image
-        src="https://rb.gy/ulxxee"
-        className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6"
-        width={150}
-        height={150}
-        alt="logo"
-      />
+
+      <Logo className="absolute left-4 top-4 cursor-pointer object-contain md:left-10 md:top-6" />
 
       {children}
     </div>

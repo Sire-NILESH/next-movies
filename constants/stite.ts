@@ -1,3 +1,8 @@
+export const siteConfig = {
+  title: "Maven",
+  description: "Explore the entertainment world.",
+};
+
 export const menueItems = [
   {
     path: "/",
@@ -12,7 +17,7 @@ export const menueItems = [
     name: "Movies",
   },
   {
-    path: "/",
+    path: "/new-and-popular",
     name: "New & Popular",
   },
   {

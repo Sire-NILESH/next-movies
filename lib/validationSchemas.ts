@@ -107,3 +107,14 @@ export type TGetMediaDetailsActionSchema = z.infer<
 >;
 
 // -------------------------------------------
+
+export const GET_MediaDetailRouteSchema = z.object({
+  id: z.string(),
+  type: MediaTypeEnum,
+});
+
+export type TGET_MediaDetailRouteSchema = z.infer<
+  typeof GET_MediaDetailRouteSchema
+>;
+
+// -------------------------------------------

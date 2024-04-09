@@ -16,7 +16,6 @@ const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
   ) {
     return (
       <div>
-        {" "}
         <input
           ref={ref}
           type={type}

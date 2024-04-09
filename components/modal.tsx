@@ -108,7 +108,7 @@ function Modal() {
             <p className="font-semibold line-clamp-2">{getMediaName(media)}</p>
 
             <div className="flex items-center space-x-2 text-sm">
-              <p className="font-semibold text-green-400">
+              <p className="font-semibold text-green-500">
                 {media?.vote_average
                   ? (media?.vote_average * 10).toFixed(2)
                   : 0}

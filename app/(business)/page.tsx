@@ -8,7 +8,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <Banner netflixOriginals={data.netflixOriginals} />
+      <Banner medias={data.discoverMedias} />
       <section className="md:space-y-24">
         <Row title="Trending Now" medias={data.trendingNow} />
         <Row title="Comedies" medias={data.comedyMovies} />

@@ -5,7 +5,7 @@ import { allRequests, movieRequests, tvRequests } from "./requests";
 
 export const getHomePageProps = async () => {
   const [
-    netflixOriginals,
+    discoverMedias,
     trendingNow,
     topRated,
     actionMovies,
@@ -14,7 +14,7 @@ export const getHomePageProps = async () => {
     romanceMovies,
     documentaries,
   ] = await Promise.all([
-    fetch(allRequests.fetchNetflixOriginals).then((res) => res.json()),
+    fetch(allRequests.fetchDiscoverMedias).then((res) => res.json()),
     fetch(allRequests.fetchTrending).then((res) => res.json()),
     fetch(allRequests.fetchTopRated).then((res) => res.json()),
     fetch(allRequests.fetchActionMovies).then((res) => res.json()),
@@ -24,7 +24,7 @@ export const getHomePageProps = async () => {
     fetch(allRequests.fetchDocumentaries).then((res) => res.json()),
   ]);
 
-  netflixOriginals.results?.forEach((content: Media) => (content.type = "tv"));
+  discoverMedias.results?.forEach((content: Media) => (content.type = "tv"));
   trendingNow.results?.forEach(
     (content: Media) =>
       (content.type = content.media_type
@@ -41,7 +41,7 @@ export const getHomePageProps = async () => {
   documentaries.results?.forEach((content: Media) => (content.type = "tv"));
 
   return {
-    netflixOriginals: netflixOriginals.results,
+    discoverMedias: discoverMedias.results,
     trendingNow: trendingNow.results,
     topRated: topRated.results,
     actionMovies: actionMovies.results,
@@ -54,7 +54,7 @@ export const getHomePageProps = async () => {
 
 export const getMoviePageProps = async () => {
   const [
-    netflixOriginals,
+    discoverMedias,
     trendingNow,
     topRated,
     actionMovies,
@@ -63,7 +63,7 @@ export const getMoviePageProps = async () => {
     romanceMovies,
     documentaries,
   ] = await Promise.all([
-    fetch(movieRequests.fetchNetflixOriginals).then((res) => res.json()),
+    fetch(movieRequests.fetchDiscoverMedias).then((res) => res.json()),
     fetch(movieRequests.fetchTrending).then((res) => res.json()),
     fetch(movieRequests.fetchTopRated).then((res) => res.json()),
     fetch(movieRequests.fetchActionMovies).then((res) => res.json()),
@@ -73,9 +73,7 @@ export const getMoviePageProps = async () => {
     fetch(movieRequests.fetchDocumentaries).then((res) => res.json()),
   ]);
 
-  netflixOriginals.results.forEach(
-    (content: Media) => (content.type = "movie")
-  );
+  discoverMedias.results.forEach((content: Media) => (content.type = "movie"));
   trendingNow.results.forEach((content: Media) => (content.type = "movie"));
   topRated.results.forEach((content: Media) => (content.type = "movie"));
   actionMovies.results.forEach((content: Media) => (content.type = "movie"));
@@ -85,7 +83,7 @@ export const getMoviePageProps = async () => {
   documentaries.results.forEach((content: Media) => (content.type = "movie"));
 
   return {
-    netflixOriginals: netflixOriginals.results,
+    discoverMedias: discoverMedias.results,
     trendingNow: trendingNow.results,
     topRated: topRated.results,
     actionMovies: actionMovies.results,
@@ -98,7 +96,7 @@ export const getMoviePageProps = async () => {
 
 export const getTvShowsPageProps = async () => {
   const [
-    netflixOriginals,
+    discoverMedias,
     trendingNow,
     topRated,
     sciFiShows,
@@ -107,7 +105,7 @@ export const getTvShowsPageProps = async () => {
     romanceShows,
     documentaries,
   ] = await Promise.all([
-    fetch(tvRequests.fetchNetflixOriginals).then((res) => res.json()),
+    fetch(tvRequests.fetchDiscoverMedias).then((res) => res.json()),
     fetch(tvRequests.fetchTrending).then((res) => res.json()),
     fetch(tvRequests.fetchTopRated).then((res) => res.json()),
     fetch(tvRequests.fetchSciFiShows).then((res) => res.json()),
@@ -117,7 +115,7 @@ export const getTvShowsPageProps = async () => {
     fetch(tvRequests.fetchDocumentaries).then((res) => res.json()),
   ]);
 
-  netflixOriginals.results.forEach((content: Media) => (content.type = "tv"));
+  discoverMedias.results.forEach((content: Media) => (content.type = "tv"));
   trendingNow.results.forEach((content: Media) => (content.type = "tv"));
   topRated.results.forEach((content: Media) => (content.type = "tv"));
   sciFiShows.results.forEach((content: Media) => (content.type = "tv"));
@@ -127,7 +125,7 @@ export const getTvShowsPageProps = async () => {
   documentaries.results.forEach((content: Media) => (content.type = "tv"));
 
   return {
-    netflixOriginals: netflixOriginals.results,
+    discoverMedias: discoverMedias.results,
     trendingNow: trendingNow.results,
     topRated: topRated.results,
     sciFiShows: sciFiShows.results,

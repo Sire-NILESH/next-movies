@@ -1,3 +1,4 @@
+import { siteConfig } from "@/constants/stite";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -7,8 +8,11 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next Movies",
-  description: "Explore the entertainment world.",
+  title: {
+    template: `%s | ${siteConfig.title}`,
+    default: siteConfig.title, // a default is required when creating a template
+  },
+  description: siteConfig.description,
 };
 
 export default function RootLayout({

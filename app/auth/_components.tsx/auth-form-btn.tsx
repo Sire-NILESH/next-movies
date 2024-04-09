@@ -26,7 +26,7 @@ const AuthFormButton = ({
       className={cn(
         "w-full rounded bg-[#E50914] font-semibold min-h-12",
         className,
-        disabled && "cursor-wait"
+        disabled && "cursor-not-allowed"
       )}
       onClick={onClick}
       type={type ? type : "submit"}
