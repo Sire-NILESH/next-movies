@@ -1,18 +1,18 @@
 "use client";
 
-import { mediaState, modalState } from "@/atoms/appAtoms";
+import { mediaAtom, modalAtom } from "@/atoms/appAtoms";
 import { Media } from "@/types/typings";
 import { InformationCircleIcon } from "@heroicons/react/solid";
+import { useSetAtom } from "jotai";
 import { FaPlay } from "react-icons/fa";
-import { useRecoilState } from "recoil";
 
 interface Props {
   media: Media;
 }
 
 function BannerAction({ media }: Props) {
-  const [_showModal, setShowModal] = useRecoilState(modalState);
-  const [_, setCurrentMedia] = useRecoilState(mediaState);
+  const setShowModal = useSetAtom(modalAtom);
+  const setCurrentMedia = useSetAtom(mediaAtom);
 
   return (
     <div className="flex space-x-3">

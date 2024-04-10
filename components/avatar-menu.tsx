@@ -7,10 +7,15 @@ import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import UserProfile from "./user-profile";
 import useAuthHandlers from "@/hooks/useAuthHandlers";
+import { useSession } from "next-auth/react";
 
 export default function AvatarMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { signoutHandler } = useAuthHandlers();
+
+  const session = useSession();
+
+  const user = session.data?.user;
 
   const open = Boolean(anchorEl);
 
@@ -44,9 +49,16 @@ export default function AvatarMenu() {
           "aria-labelledby": "avatar-button",
         }}
       >
+        {user && (
+          <MenuItem>
+            <div className="flex items-center space-x-2">
+              <span>Hello {user.name}</span>
+            </div>
+          </MenuItem>
+        )}
         <MenuItem onClick={signoutHandler}>
           <div className="flex items-center space-x-2">
-            <TbLogout2 size={24} /> <span>Logout</span>
+            <TbLogout2 size={20} /> <span>Logout</span>
           </div>
         </MenuItem>
       </Menu>

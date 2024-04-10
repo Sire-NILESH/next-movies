@@ -1,11 +1,11 @@
 "use client";
 
-import { modalState } from "@/atoms/appAtoms";
-import { useRecoilValue } from "recoil";
+import { modalAtom } from "@/atoms/appAtoms";
 import Modal from "./modal";
+import { useAtomValue } from "jotai";
 
 const LayoutWideModal = () => {
-  const showModal = useRecoilValue(modalState);
+  const showModal = useAtomValue(modalAtom);
   return <>{showModal && <Modal />}</>;
 };
 

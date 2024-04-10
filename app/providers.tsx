@@ -1,18 +1,18 @@
 "use client";
 
-import SWRConfigProvider from "@/components/swr-config-provider";
+import JotaiStateProvider from "@/components/providers/jotai-provider";
+import SWRConfigProvider from "@/components/providers/swr-config-provider";
 import { AuthHandlerProvider } from "@/hooks/useAuthHandlers";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
-import { RecoilRoot } from "recoil";
 
 const Providers = ({ children }: React.PropsWithChildren) => {
   return (
     <SessionProvider>
       <AuthHandlerProvider>
-        <RecoilRoot>
+        <JotaiStateProvider>
           <SWRConfigProvider>{children}</SWRConfigProvider>
-        </RecoilRoot>
+        </JotaiStateProvider>
       </AuthHandlerProvider>
     </SessionProvider>
   );

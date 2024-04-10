@@ -8,9 +8,8 @@ import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useMemo, useState } from "react";
 
 export interface CustomError {
-  errorType: "Firebase auth createUserWithEmailAndPassword Error" | string;
+  errorType: string;
   message: string;
-  description: string;
 }
 
 interface Auth {

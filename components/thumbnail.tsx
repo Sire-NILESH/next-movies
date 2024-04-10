@@ -1,18 +1,18 @@
 "use client";
 
-import { mediaState, modalState } from "@/atoms/appAtoms";
+import { mediaAtom, modalAtom } from "@/atoms/appAtoms";
 import { getMediaName } from "@/lib/helpers";
 import { Media } from "@/types/typings";
+import { useSetAtom } from "jotai";
 import Image from "next/image";
-import { useRecoilState } from "recoil";
 
 interface Props {
   media: Media;
 }
 
 function Thumbnail({ media }: Props) {
-  const [_showModal, setShowModal] = useRecoilState(modalState);
-  const [_currentMedia, setCurrentMedia] = useRecoilState(mediaState);
+  const setShowModal = useSetAtom(modalAtom);
+  const setCurrentMedia = useSetAtom(mediaAtom);
   return (
     <div
       className={

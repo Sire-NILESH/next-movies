@@ -13,17 +13,17 @@ import MuiModal from "@mui/material/Modal";
 import React, { useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import ReactPlayer from "react-player/lazy"; //remember to make it '/lazy' for lazy loading
-import { useRecoilState } from "recoil";
 
-import { mediaState, modalState } from "@/atoms/appAtoms";
+import { mediaAtom, modalAtom } from "@/atoms/appAtoms";
 import useUserListMediaActions from "@/hooks/useUserListMediaActions";
-import { getMediaName } from "@/lib/helpers";
+import { getMediaName, movieGenreIdMap, tvGenreIdMap } from "@/lib/helpers";
 import { by639_1 } from "iso-language-codes";
 import useMediaDetails from "@/hooks/useMediaDetails";
+import { useAtom } from "jotai";
 
 function Modal() {
-  const [showModal, setShodwModal] = useRecoilState(modalState);
-  const [media] = useRecoilState(mediaState);
+  const [showModal, setShodwModal] = useAtom(modalAtom);
+  const [media] = useAtom(mediaAtom);
   const [muted, setMuted] = useState(true);
 
   const {
@@ -128,10 +128,25 @@ function Modal() {
                 <p className="text-base md:w-5/6">{media?.overview}</p>
               ) : null}
               <div className="flex flex-col space-y-3 text-sm">
-                {mediaDetails?.genres && (
+                {/* {mediaDetails?.genres && (
                   <div>
                     <span className="text-[gray]">Genres:</span>{" "}
                     {mediaDetails.genres.map((genre) => genre.name).join(", ")}
+                  </div>
+                )} */}
+
+                {media?.genre_ids && (
+                  <div>
+                    <span className="text-[gray]">Genres:</span>{" "}
+                    {media.genre_ids
+                      .map((genreId) => {
+                        return media.type === "movie"
+                          ? // @ts-ignore
+                            movieGenreIdMap[genreId.toString()]
+                          : // @ts-ignore
+                            tvGenreIdMap[genreId.toString()];
+                      })
+                      .join(", ")}
                   </div>
                 )}
 

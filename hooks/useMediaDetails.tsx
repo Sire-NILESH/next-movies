@@ -10,7 +10,9 @@ const useMediaDetails = (
   mediaType: MediaType | undefined
 ) => {
   const { data, error, isLoading, isValidating } = useSWR<Props>(
-    `/api/v1/media?id=${mediaId}&type=${mediaType}`,
+    mediaId && mediaType
+      ? `/api/v1/media?id=${mediaId}&type=${mediaType}`
+      : null,
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
