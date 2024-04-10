@@ -16,20 +16,21 @@ import ReactPlayer from "react-player/lazy"; //remember to make it '/lazy' for l
 import { useRecoilState } from "recoil";
 
 import { mediaState, modalState } from "@/atoms/appAtoms";
-import useGetMediaInfo from "@/hooks/useGetMediaTrailer";
 import useUserListMediaActions from "@/hooks/useUserListMediaActions";
 import { getMediaName } from "@/lib/helpers";
 import { by639_1 } from "iso-language-codes";
+import useMediaDetails from "@/hooks/useMediaDetails";
 
 function Modal() {
   const [showModal, setShodwModal] = useRecoilState(modalState);
   const [media] = useRecoilState(mediaState);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   const {
-    trailer: { trailer, trailerError, trailerLoading },
-    genres,
-  } = useGetMediaInfo({ media });
+    mediaDetails,
+    isLoading: mediaDetailsIsLoading,
+    error: trailerError,
+  } = useMediaDetails(media?.id, media?.type);
 
   const { isMediaUserListed, handleList } = useUserListMediaActions({
     media,
@@ -55,9 +56,9 @@ function Modal() {
         {/* the 3rd party video player */}
         {/* the exact styling to make it responsive with that strange margin top value is provided by the Docs*/}
         <div className="relative bg-black pt-[56.25%]">
-          {trailer ? (
+          {mediaDetails?.trailer ? (
             <ReactPlayer
-              url={`https://www.youtube.com/watch?v=${trailer}`}
+              url={`https://www.youtube.com/watch?v=${mediaDetails?.trailer}`}
               width="100%"
               height="100%"
               style={{ position: "absolute", top: "0", left: "0" }}
@@ -67,9 +68,9 @@ function Modal() {
           ) : (
             <div className="absolute top-[35%] flex w-full items-center justify-center md:top-[50%]">
               <p className="inline-block text-2xl font-semibold text-gray-400">
-                {trailerLoading
+                {mediaDetailsIsLoading
                   ? "Loading..."
-                  : trailerError
+                  : !mediaDetails?.trailer
                   ? "Sorry, video is unavailable"
                   : "Sorry, video is unavailable"}
               </p>
@@ -127,10 +128,10 @@ function Modal() {
                 <p className="text-base md:w-5/6">{media?.overview}</p>
               ) : null}
               <div className="flex flex-col space-y-3 text-sm">
-                {genres && (
+                {mediaDetails?.genres && (
                   <div>
                     <span className="text-[gray]">Genres:</span>{" "}
-                    {genres.map((genre) => genre.name).join(", ")}
+                    {mediaDetails.genres.map((genre) => genre.name).join(", ")}
                   </div>
                 )}
 

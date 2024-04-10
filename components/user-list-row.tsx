@@ -1,18 +1,16 @@
 "use client";
 
-import { userListState } from "@/atoms/appAtoms";
-import { useRecoilState } from "recoil";
 import Row from "./row";
-import useList from "@/hooks/useList";
+import useUserList from "@/hooks/useUserList";
 
 const UserListRow = () => {
-  const [userList] = useRecoilState(userListState);
+  const { userList } = useUserList();
 
-  useList();
+  if (!userList) return null;
 
   return (
     <>
-      {userList?.length > 0 ? <Row title="My List" medias={userList} /> : null}
+      {userList.length > 0 ? <Row title="My List" medias={userList} /> : null}
     </>
   );
 };

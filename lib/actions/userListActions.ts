@@ -19,6 +19,12 @@ import {
 /**
  * Server action that gets all the medias present in the current logged in user's list
  *
+ * @deprecated Use the route handler instead.
+ *
+ * Route handler example
+ * @example 'GET /api/v1/user-list'
+ *
+ *
  * @returns
  */
 export const getUserListMediasAction = async () => {

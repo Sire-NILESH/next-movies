@@ -14,8 +14,3 @@ export const mediaState = atom<Media | null>({
   key: "mediaState",
   default: null,
 });
-
-export const userListState = atom<Media[]>({
-  key: "userListState",
-  default: [],
-});

@@ -1,7 +1,7 @@
 import { getCurrentSessionAction } from "@/lib/actions/authActions";
 import { mediaDetailRequest } from "@/lib/requests";
 import { GET_MediaDetailRouteSchema } from "@/lib/validationSchemas";
-import { Genre, MediaTrailerElement } from "@/types/typings";
+import { Genre, MediaDetails, MediaTrailerElement } from "@/types/typings";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -44,11 +44,12 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
 
-    const mediaDetails = {
+    const mediaDetails: MediaDetails = {
       mediaId: Number(mediaId),
       mediaType,
-      trailer: "",
-      genres: [] as Genre[],
+      trailer: null,
+      // genres: [] as Genre[],
+      genres: null,
     };
 
     if (data?.videos) {
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (data?.genres) {
-      mediaDetails.genres = data.genres;
+      mediaDetails.genres = data.genres as Genre[];
     }
 
     return NextResponse.json({ data: mediaDetails }, { status: 200 });

@@ -42,3 +42,10 @@ export interface MediaTrailerElement {
     | "Trailer"
     | "Teaser";
 }
+
+export interface MediaDetails {
+  mediaId: number;
+  mediaType: "movie" | "tv";
+  trailer: string | null;
+  genres: Genre[] | null;
+}

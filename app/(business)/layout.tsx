@@ -1,16 +1,15 @@
 import Header from "@/components/header";
 import LayoutWideModal from "@/components/layout-wide-modal";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/components/auth-options";
 
+// Pages contained in this route are auth protected only
 const BusinessLogicPagesLayout = async ({ children }: PropsWithChildren) => {
-  const session = await getServerSession(authOptions);
+  // Unsafe to do it this way, now handled using middleware.ts
+  // const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
-    redirect("/auth/signin");
-  }
+  // if (!session?.user) {
+  //   redirect("/auth/signin");
+  // }
 
   return (
     <>

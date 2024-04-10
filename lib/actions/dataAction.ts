@@ -13,6 +13,16 @@ import {
 } from "./actionResHandler";
 import { getCurrentSessionAction } from "./authActions";
 
+/**
+ * Server action to get media details from the server.
+ * @deprecated Use the route handler instead.
+ *
+ * Route handler example
+ * @example 'GET /api/v1/media?id=424&type=movie'
+ *
+ * @param params
+ * @returns
+ */
 export const getMediaDetailsAction = async (
   params: TGetMediaDetailsActionSchema
 ) => {

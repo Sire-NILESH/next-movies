@@ -1,6 +1,5 @@
 "use client";
 
-import { userListState } from "@/atoms/appAtoms";
 import { toastStyle } from "@/constants/toast-styles";
 import {
   addMediaToListAction,
@@ -11,7 +10,7 @@ import { Media } from "@/types/typings";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
+import useUserList from "./useUserList";
 
 type Props = {
   media: Media | null;
@@ -19,11 +18,12 @@ type Props = {
 
 const useUserListMediaActions = ({ media }: Props) => {
   const { data: session } = useSession();
-  const [userList, setUserList] = useRecoilState(userListState);
+
+  const { userList, mutate } = useUserList();
 
   // Check if the media is already in the user's list
   const isMediaUserListed = useMemo(
-    () => userList.findIndex((result) => result.id === media?.id) !== -1,
+    () => userList?.findIndex((result) => result.id === media?.id) !== -1,
     [media?.id, userList]
   );
 
@@ -42,7 +42,15 @@ const useUserListMediaActions = ({ media }: Props) => {
 
         if (res?.error) throw new Error(res.error);
 
-        setUserList((prev) => [...prev.filter((item) => item.id !== media.id)]);
+        // mutate the userlist from useSWR cache
+        // see https://swr.vercel.app/docs/mutation#bound-mutate
+        userList &&
+          (await mutate({
+            data: {
+              list: [...userList.filter((item) => item.id !== media.id)],
+            },
+          }));
+
         toast(
           `${
             media?.title || media?.original_name
@@ -62,7 +70,15 @@ const useUserListMediaActions = ({ media }: Props) => {
 
         if (res?.error) throw new Error(res.error);
 
-        setUserList((prev) => [...prev, media]);
+        // mutate the userlist from useSWR cache
+        // see https://swr.vercel.app/docs/mutation#bound-mutate
+        userList &&
+          (await mutate({
+            data: {
+              list: [...userList, media],
+            },
+          }));
+
         toast(`${getMediaName(media)} has been added to My List`, {
           duration: 8000,
           style: toastStyle,
@@ -73,18 +89,6 @@ const useUserListMediaActions = ({ media }: Props) => {
         duration: 8000,
         style: toastStyle,
       });
-
-      // if (error instanceof Error) {
-      //   toast("Something went wrong", {
-      //     duration: 8000,
-      //     style: toastStyle,
-      //   });
-      // } else {
-      //   toast(error as string, {
-      //     duration: 8000,
-      //     style: toastStyle,
-      //   });
-      // }
     }
   };
 
