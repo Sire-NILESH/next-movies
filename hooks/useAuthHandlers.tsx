@@ -5,7 +5,13 @@ import { customiseAuthError } from "@/lib/auth-err-handler";
 import { TSignUpSchema } from "@/lib/validationSchemas";
 import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 export interface CustomError {
   errorType: string;
@@ -51,75 +57,76 @@ export const AuthHandlerProvider = ({
   const [error, setError] = useState<null | any>(null);
   const router = useRouter();
 
-  const signinHandler = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      setActionSuccess(false);
+  const signinHandler = useCallback(
+    async (email: string, password: string) => {
+      try {
+        setLoading(true);
+        setError(null);
+        setActionSuccess(false);
 
-      if (email && password) {
-        const signInResponse = await signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-          callbackUrl: "/",
-        });
+        if (email && password) {
+          const signInResponse = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+            callbackUrl: "/",
+          });
 
-        if (signInResponse?.ok) {
+          if (signInResponse?.ok) {
+            setActionSuccess(true);
+            router.push(signInResponse.url ? signInResponse.url : "/");
+          } else if (signInResponse?.error) {
+            setActionSuccess(false);
+            setError(customiseAuthError(signInResponse.error));
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [router]
+  );
+
+  const signupHandler = useCallback(
+    async ({ email, password, confirmPassword, name }: TSignUpSchema) => {
+      try {
+        setLoading(true);
+        setError(null);
+        setActionSuccess(false);
+
+        if (email) {
+          const signupResponse = await signUpAction({
+            email,
+            password,
+            name,
+            confirmPassword,
+          });
+
+          if (signupResponse.error) {
+            setActionSuccess(false);
+            setError(customiseAuthError(signupResponse.error));
+            return;
+          }
+
           setActionSuccess(true);
-          router.push(signInResponse.url ? signInResponse.url : "/");
-        } else if (signInResponse?.error) {
-          setActionSuccess(false);
-          setError(customiseAuthError(signInResponse.error));
+
+          // router.push("/signin");
         }
+      } catch (error) {
+        console.error(error);
+        setActionSuccess(false);
+        setError(customiseAuthError(error));
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    []
+  );
 
-  const signupHandler = async ({
-    email,
-    password,
-    confirmPassword,
-    name,
-  }: TSignUpSchema) => {
-    try {
-      setLoading(true);
-      setError(null);
-      setActionSuccess(false);
-
-      if (email) {
-        const signupResponse = await signUpAction({
-          email,
-          password,
-          name,
-          confirmPassword,
-        });
-
-        if (signupResponse.error) {
-          setActionSuccess(false);
-          setError(customiseAuthError(signupResponse.error));
-          return;
-        }
-
-        setActionSuccess(true);
-
-        // router.push("/signin");
-      }
-    } catch (error) {
-      console.error(error);
-      setActionSuccess(false);
-      setError(customiseAuthError(error));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const signoutHandler = async () => {
+  const signoutHandler = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -133,21 +140,21 @@ export const AuthHandlerProvider = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     setError(null);
-  };
+  }, []);
 
-  const clearActionSuccess = () => {
+  const clearActionSuccess = useCallback(() => {
     setActionSuccess(false);
-  };
+  }, []);
 
-  const resetAuthHandlerStates = () => {
+  const resetAuthHandlerStates = useCallback(() => {
     setError(null);
     setActionSuccess(false);
     setLoading(false);
-  };
+  }, []);
 
   const memoedValue = useMemo<Auth>(
     () => ({

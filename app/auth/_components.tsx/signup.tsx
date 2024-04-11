@@ -36,7 +36,7 @@ function Signup() {
     watch,
     formState: { errors },
   } = useForm<TSignUpSchema>({
-    mode: "onBlur",
+    mode: "onChange",
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",

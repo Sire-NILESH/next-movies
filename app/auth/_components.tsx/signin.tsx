@@ -39,7 +39,7 @@ function Signin() {
     reset,
     formState: { errors },
   } = useForm<TSignInSchema>({
-    mode: "onBlur",
+    mode: "onChange",
     resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "",
