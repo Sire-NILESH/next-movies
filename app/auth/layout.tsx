@@ -1,8 +1,8 @@
 import Logo from "@/components/logo";
 import Image from "next/image";
-import { ComponentPropsWithoutRef } from "react";
+import { PropsWithChildren } from "react";
 
-const AuthLayout = ({ children }: ComponentPropsWithoutRef<"div">) => {
+const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent">
       <Image
