@@ -1,6 +1,6 @@
 import { getCurrentSessionAction } from "@/lib/actions/authActions";
 import { mediaDetailRequest } from "@/lib/requests";
-import { GET_MediaDetailRouteSchema } from "@/lib/validationSchemas";
+import { GET_MediaDetailRouteSchema } from "@/lib/validation-schemas";
 import { Genre, MediaDetails, MediaTrailerElement } from "@/types/typings";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

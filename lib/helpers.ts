@@ -6,6 +6,19 @@ export const getMediaName = (media: null | Media) => {
   );
 };
 
+export const filterObj = function <T extends Object>(
+  obj: T,
+  allowedFields: (keyof T)[]
+) {
+  const newObj: Partial<T> = {};
+  Object.keys(obj as Partial<T>).forEach((el) => {
+    if (allowedFields.includes(el as keyof T))
+      newObj[el as keyof T] = obj[el as keyof T];
+  });
+
+  return newObj;
+};
+
 export const tvGenreIdMap = {
   10759: "Action & Adventure",
   16: "Animation",

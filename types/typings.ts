@@ -1,4 +1,4 @@
-import { MediaTypeEnum, TMedia } from "@/lib/validationSchemas";
+import { MediaTypeEnum, TMedia } from "@/lib/validation-schemas";
 
 export interface AuthUser {
   id: string;

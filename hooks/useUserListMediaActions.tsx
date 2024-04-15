@@ -22,10 +22,11 @@ const useUserListMediaActions = ({ media }: Props) => {
   const { userList, mutate } = useUserList();
 
   // Check if the media is already in the user's list
-  const isMediaUserListed = useMemo(
-    () => userList?.findIndex((result) => result.id === media?.id) !== -1,
-    [media?.id, userList]
-  );
+  const isMediaUserListed = useMemo(() => {
+    if (!userList) return false;
+
+    userList.findIndex((result) => result.id === media?.id) !== -1;
+  }, [media?.id, userList]);
 
   const handleList = async () => {
     try {

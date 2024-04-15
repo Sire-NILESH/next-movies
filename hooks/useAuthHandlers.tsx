@@ -1,8 +1,8 @@
 "use client";
 
 import { signUpAction } from "@/lib/actions/authActions";
-import { customiseAuthError } from "@/lib/auth-err-handler";
-import { TSignUpSchema } from "@/lib/validationSchemas";
+import { customiseAuthError } from "@/lib/client-auth-err-handler";
+import { TSignUpSchema } from "@/lib/validation-schemas";
 import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, {

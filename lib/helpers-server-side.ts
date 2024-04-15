@@ -22,25 +22,3 @@ export function prismaExclude<T extends Entity, K extends Keys<T>>(
   return result;
 }
 
-// // Exclude keys from user
-// export function excludeFields<T, Key extends keyof T>(
-//   obj: T,
-//   keys: Key[]
-// ): Omit<T, Key> {
-//   return Object.fromEntries(
-//     Object.entries(obj).filter(([key]) => !keys.includes(key))
-//   ) as Omit<T, Key>;
-// }
-
-// function exclude<User, Key extends keyof User>(
-//    user: User,
-//    keys: Key[]
-//  ): Omit<User, Key> {
-//    const result: Partial<User> = {};
-//    for (const [key, value] of Object.entries(user)) {
-//      if (!keys.includes(key as Key)) {
-//        result[key] = value;
-//      }
-//    }
-//    return result as Omit<User, Key>;
-//  }

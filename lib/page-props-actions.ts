@@ -3,135 +3,114 @@
 import { Media } from "../types/typings";
 import { allRequests, movieRequests, tvRequests } from "./requests";
 
+/**
+ * Helper function to fetch filtered requests from a request object.
+ * Also sets the 'type' property for each Media to its respective MediaType.
+ *
+ * @param requestObj Request object with ids and URLs strings.
+ * @param filteredFields ids to be fetched from `requestObj`
+ * @returns
+ */
+const getResults = async function <T extends Record<string, string>>(
+  requestObj: T,
+  filteredFields: (keyof T)[]
+) {
+  if (filteredFields.length === 0) return [];
+
+  const fetchFilteredFields = await Promise.all(
+    filteredFields.map((field) =>
+      fetch(requestObj[field] as string, {
+        next: { revalidate: 86400 }, //this will revalidate the data after every 24 hrs.
+      }).then((res) => res.json())
+    )
+  );
+
+  // Important: manully adding a mediatype on 'type' field for each media
+  fetchFilteredFields?.forEach((field) =>
+    field?.results?.forEach(
+      (content: Media) =>
+        (content.type = content.media_type
+          ? content.media_type
+          : content.name || content.original_name
+          ? "tv"
+          : "movie")
+    )
+  );
+
+  return fetchFilteredFields;
+};
+
 export const getHomePageProps = async () => {
-  const [
-    discoverMedias,
-    trendingNow,
-    topRated,
-    actionMovies,
-    comedyMovies,
-    horrorMovies,
-    romanceMovies,
-    documentaries,
-  ] = await Promise.all([
-    fetch(allRequests.fetchDiscoverMedias).then((res) => res.json()),
-    fetch(allRequests.fetchTrending).then((res) => res.json()),
-    fetch(allRequests.fetchTopRated).then((res) => res.json()),
-    fetch(allRequests.fetchActionMovies).then((res) => res.json()),
-    fetch(allRequests.fetchComedyMovies).then((res) => res.json()),
-    fetch(allRequests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(allRequests.fetchRomanceMovies).then((res) => res.json()),
-    fetch(allRequests.fetchDocumentaries).then((res) => res.json()),
+  const data = await getResults(allRequests, [
+    "fetchDiscoverMedias",
+    "fetchTrending",
+    "fetchTopRated",
+    "fetchActionMovies",
+    "fetchComedyMovies",
+    "fetchHorrorMovies",
+    "fetchRomanceMovies",
+    "fetchDocumentaries",
   ]);
 
-  discoverMedias.results?.forEach((content: Media) => (content.type = "tv"));
-  trendingNow.results?.forEach(
-    (content: Media) =>
-      (content.type = content.media_type
-        ? content.media_type
-        : content.name || content.original_name
-        ? "tv"
-        : "movie")
-  );
-  topRated.results?.forEach((content: Media) => (content.type = "movie"));
-  actionMovies.results?.forEach((content: Media) => (content.type = "movie"));
-  comedyMovies.results?.forEach((content: Media) => (content.type = "tv"));
-  horrorMovies.results?.forEach((content: Media) => (content.type = "movie"));
-  romanceMovies.results?.forEach((content: Media) => (content.type = "tv"));
-  documentaries.results?.forEach((content: Media) => (content.type = "tv"));
-
+  // maintain the order
   return {
-    discoverMedias: discoverMedias.results,
-    trendingNow: trendingNow.results,
-    topRated: topRated.results,
-    actionMovies: actionMovies.results,
-    comedyMovies: comedyMovies.results,
-    horrorMovies: horrorMovies.results,
-    romanceMovies: romanceMovies.results,
-    documentaries: documentaries.results,
+    discoverMedias: data[0]?.results,
+    trendingNow: data[1]?.results,
+    topRated: data[2]?.results,
+    actionMovies: data[3]?.results,
+    comedyMovies: data[4]?.results,
+    horrorMovies: data[5]?.results,
+    romanceMovies: data[6]?.results,
+    documentaries: data[7]?.results,
   };
 };
 
 export const getMoviePageProps = async () => {
-  const [
-    discoverMedias,
-    trendingNow,
-    topRated,
-    actionMovies,
-    comedyMovies,
-    horrorMovies,
-    romanceMovies,
-    documentaries,
-  ] = await Promise.all([
-    fetch(movieRequests.fetchDiscoverMedias).then((res) => res.json()),
-    fetch(movieRequests.fetchTrending).then((res) => res.json()),
-    fetch(movieRequests.fetchTopRated).then((res) => res.json()),
-    fetch(movieRequests.fetchActionMovies).then((res) => res.json()),
-    fetch(movieRequests.fetchComedyMovies).then((res) => res.json()),
-    fetch(movieRequests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(movieRequests.fetchRomanceMovies).then((res) => res.json()),
-    fetch(movieRequests.fetchDocumentaries).then((res) => res.json()),
+  const data = await getResults(movieRequests, [
+    "fetchDiscoverMedias",
+    "fetchTrending",
+    "fetchTopRated",
+    "fetchActionMovies",
+    "fetchComedyMovies",
+    "fetchHorrorMovies",
+    "fetchRomanceMovies",
+    "fetchDocumentaries",
   ]);
 
-  discoverMedias.results.forEach((content: Media) => (content.type = "movie"));
-  trendingNow.results.forEach((content: Media) => (content.type = "movie"));
-  topRated.results.forEach((content: Media) => (content.type = "movie"));
-  actionMovies.results.forEach((content: Media) => (content.type = "movie"));
-  comedyMovies.results.forEach((content: Media) => (content.type = "movie"));
-  horrorMovies.results.forEach((content: Media) => (content.type = "movie"));
-  romanceMovies.results.forEach((content: Media) => (content.type = "movie"));
-  documentaries.results.forEach((content: Media) => (content.type = "movie"));
-
+  // maintain the order
   return {
-    discoverMedias: discoverMedias.results,
-    trendingNow: trendingNow.results,
-    topRated: topRated.results,
-    actionMovies: actionMovies.results,
-    comedyMovies: comedyMovies.results,
-    horrorMovies: horrorMovies.results,
-    romanceMovies: romanceMovies.results,
-    documentaries: documentaries.results,
+    discoverMedias: data[0]?.results,
+    trendingNow: data[1]?.results,
+    topRated: data[2]?.results,
+    actionMovies: data[3]?.results,
+    comedyMovies: data[4]?.results,
+    horrorMovies: data[5]?.results,
+    romanceMovies: data[6]?.results,
+    documentaries: data[7]?.results,
   };
 };
 
 export const getTvShowsPageProps = async () => {
-  const [
-    discoverMedias,
-    trendingNow,
-    topRated,
-    sciFiShows,
-    comedyShows,
-    mysteryShows,
-    romanceShows,
-    documentaries,
-  ] = await Promise.all([
-    fetch(tvRequests.fetchDiscoverMedias).then((res) => res.json()),
-    fetch(tvRequests.fetchTrending).then((res) => res.json()),
-    fetch(tvRequests.fetchTopRated).then((res) => res.json()),
-    fetch(tvRequests.fetchSciFiShows).then((res) => res.json()),
-    fetch(tvRequests.fetchComedyShows).then((res) => res.json()),
-    fetch(tvRequests.fetchMysteryShows).then((res) => res.json()),
-    fetch(tvRequests.fetchRomanceShows).then((res) => res.json()),
-    fetch(tvRequests.fetchDocumentaries).then((res) => res.json()),
+  const data = await getResults(tvRequests, [
+    "fetchDiscoverMedias",
+    "fetchTrending",
+    "fetchTopRated",
+    "fetchSciFiShows",
+    "fetchComedyShows",
+    "fetchMysteryShows",
+    "fetchRomanceShows",
+    "fetchDocumentaries",
   ]);
 
-  discoverMedias.results.forEach((content: Media) => (content.type = "tv"));
-  trendingNow.results.forEach((content: Media) => (content.type = "tv"));
-  topRated.results.forEach((content: Media) => (content.type = "tv"));
-  sciFiShows.results.forEach((content: Media) => (content.type = "tv"));
-  comedyShows.results.forEach((content: Media) => (content.type = "tv"));
-  mysteryShows.results.forEach((content: Media) => (content.type = "tv"));
-  romanceShows.results.forEach((content: Media) => (content.type = "tv"));
-  documentaries.results.forEach((content: Media) => (content.type = "tv"));
-
+  // maintain the order
   return {
-    discoverMedias: discoverMedias.results,
-    trendingNow: trendingNow.results,
-    topRated: topRated.results,
-    sciFiShows: sciFiShows.results,
-    comedyShows: comedyShows.results,
-    mysteryShows: mysteryShows.results,
-    romanceShows: romanceShows.results,
-    documentaries: documentaries.results,
+    discoverMedias: data[0]?.results,
+    trendingNow: data[1]?.results,
+    topRated: data[2]?.results,
+    sciFiShows: data[3]?.results,
+    comedyShows: data[4]?.results,
+    mysteryShows: data[5]?.results,
+    romanceShows: data[6]?.results,
+    documentaries: data[7]?.results,
   };
 };

@@ -3,7 +3,7 @@ import {
   getUserByEmailAction,
 } from "@/lib/actions/authActions";
 import db from "@/lib/db/prisma";
-import { SignInSchema } from "@/lib/validationSchemas";
+import { SignInSchema } from "@/lib/validation-schemas";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { AuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";

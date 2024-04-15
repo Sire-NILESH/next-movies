@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import AppError from "../app-error";
 import db from "../db/prisma";
 import { prismaExclude } from "../helpers-server-side";
-import { SignUpSchema, TSignUpSchema } from "../validationSchemas";
+import { SignUpSchema, TSignUpSchema } from "../validation-schemas";
 import {
   handleActionErrResponse,
   handleActionResponse,

@@ -10,7 +10,7 @@ import {
   DeleteMediaFromListActionSchema,
   TAddMediaToListAction,
   TDeleteMediaFromListAction,
-} from "../validationSchemas";
+} from "../validation-schemas";
 import {
   handleActionErrResponse,
   handleActionResponse,

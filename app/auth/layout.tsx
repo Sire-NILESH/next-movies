@@ -7,9 +7,8 @@ const AuthLayout = ({ children }: ComponentPropsWithoutRef<"div">) => {
     <div className="relative flex h-screen w-screen flex-col bg-black md:items-center md:justify-center md:bg-transparent">
       <Image
         src="https://rb.gy/p2hphi"
-        layout="fill"
-        className="-z-10 !hidden opacity-60 sm:!inline"
-        objectFit="cover"
+        fill={true}
+        className="-z-10 !hidden object-cover opacity-60 sm:!inline"
         alt="background banner"
       />
 

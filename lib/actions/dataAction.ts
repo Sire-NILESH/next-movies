@@ -6,7 +6,7 @@ import { mediaDetailRequest } from "../requests";
 import {
   GetMediaDetailsActionSchema,
   TGetMediaDetailsActionSchema,
-} from "../validationSchemas";
+} from "../validation-schemas";
 import {
   handleActionErrResponse,
   handleActionResponse,

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Signin from "../_components.tsx/signin";
+import Signin from "../_components/signin";
 
 export const metadata: Metadata = {
   title: "Sign in",

@@ -2,16 +2,16 @@
 
 import { toastStyle } from "@/constants/toast-styles";
 import useAuthHandlers from "@/hooks/useAuthHandlers";
-import { SignUpSchema, TSignUpSchema } from "@/lib/validationSchemas";
+import { SignUpSchema, TSignUpSchema } from "@/lib/validation-schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import AuthForm from "../_components.tsx/auth-form";
-import AuthFormButton from "../_components.tsx/auth-form-btn";
-import AuthFormInput from "../_components.tsx/auth-form-input";
+import AuthForm from "./auth-form";
+import AuthFormButton from "./auth-form-btn";
+import AuthFormInput from "./auth-form-input";
 
 export const metadata: Metadata = {
   title: "Sign up",
