@@ -25,7 +25,7 @@ const useUserListMediaActions = ({ media }: Props) => {
   const isMediaUserListed = useMemo(() => {
     if (!userList) return false;
 
-    userList.findIndex((result) => result.id === media?.id) !== -1;
+    return userList.findIndex((result) => result.id === media?.id) !== -1;
   }, [media?.id, userList]);
 
   const handleList = async () => {
