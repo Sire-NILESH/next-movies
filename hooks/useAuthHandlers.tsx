@@ -42,7 +42,6 @@ const extractCallbackUrl = (baseUrl: string | null) => {
   const params = new URLSearchParams(url.search);
   const callbackUrl = params.get("callbackUrl");
 
-  console.log(callbackUrl); // Outputs: http://localhost:3000/
   return callbackUrl;
 };
 
@@ -52,7 +51,6 @@ const extractPathname = (baseUrl: string | null) => {
   const callbackUrlObject = new URL(baseUrl);
   const pathname = callbackUrlObject.pathname;
 
-  console.log(pathname); // Outputs: /
   return pathname;
 };
 
