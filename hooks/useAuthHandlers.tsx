@@ -35,6 +35,27 @@ interface Auth {
   loading: boolean;
 }
 
+const extractCallbackUrl = (baseUrl: string | null) => {
+  if (!baseUrl) return null;
+
+  const url = new URL(baseUrl);
+  const params = new URLSearchParams(url.search);
+  const callbackUrl = params.get("callbackUrl");
+
+  console.log(callbackUrl); // Outputs: http://localhost:3000/
+  return callbackUrl;
+};
+
+const extractPathname = (baseUrl: string | null) => {
+  if (!baseUrl) return null;
+
+  const callbackUrlObject = new URL(baseUrl);
+  const pathname = callbackUrlObject.pathname;
+
+  console.log(pathname); // Outputs: /
+  return pathname;
+};
+
 const AuthContext = createContext<Auth>({
   signinHandler: async () => {},
   signupHandler: async () => {},
@@ -69,12 +90,21 @@ export const AuthHandlerProvider = ({
             email,
             password,
             redirect: false,
-            callbackUrl: "/",
+            // callbackUrl: "/",
           });
 
           if (signInResponse?.ok) {
             setActionSuccess(true);
-            router.push(signInResponse.url ? signInResponse.url : "/");
+            // router.push("/"); // routing to "/" on signInResponse?.ok doesn't work on production for some reason.
+
+            const callbackUrl = extractCallbackUrl(signInResponse.url);
+            const callbackPathName = extractPathname(callbackUrl);
+
+            router.push(
+              callbackPathName && callbackPathName !== "/"
+                ? callbackPathName
+                : "/home"
+            );
           } else if (signInResponse?.error) {
             setActionSuccess(false);
             setError(customiseAuthError(signInResponse.error));

@@ -5,7 +5,7 @@ export const siteConfig = {
 
 export const menueItems = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
   },
   {
