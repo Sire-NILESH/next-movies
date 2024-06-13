@@ -3,6 +3,16 @@
 import { Media } from "../types/typings";
 import { allRequests, movieRequests, tvRequests } from "./requests";
 
+const fetchRequest = async (url: string) => {
+  const res = await fetch(url, {
+    next: { revalidate: 604800 }, //this will revalidate the data after every week.
+  });
+
+  if (!res.ok) throw new Error("failed to fetch API data 💥💥💥");
+
+  return res.json();
+};
+
 /**
  * Helper function to fetch filtered requests from a request object.
  * Also sets the 'type' property for each Media to its respective MediaType.
@@ -18,11 +28,7 @@ const getResults = async function <T extends Record<string, string>>(
   if (filteredFields.length === 0) return [];
 
   const fetchFilteredFields = await Promise.all(
-    filteredFields.map((field) =>
-      fetch(requestObj[field] as string, {
-        next: { revalidate: 86400 }, //this will revalidate the data after every 24 hrs.
-      }).then((res) => res.json())
-    )
+    filteredFields.map((field) => fetchRequest(requestObj[field] as string))
   );
 
   // Important: manully adding a mediatype on 'type' field for each media

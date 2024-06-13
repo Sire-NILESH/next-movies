@@ -24,7 +24,7 @@ function Banner({ medias }: Props) {
         />
       </div>
 
-      <h1 className="pt-10 lg:pt-0 md:h-16 lg:h-28 md:py-4 text-2xl font-bold md:text-4xl lg:text-7xl line-clamp-2 text-shadow-md">
+      <h1 className="pt-10 lg:pt-0 md:py-4 text-2xl font-bold md:text-4xl lg:text-7xl text-shadow-md">
         {media?.title ?? media?.name ?? media?.original_name}
       </h1>
 

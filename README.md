@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Maven Next - Discover Movies and TV Shows
 
-## Getting Started
+▶️ Click the image below to watch it on **Youtube**.
 
-First, run the development server:
+<div  align="center">
+	<br />
+	<a  href="https://youtu.be/LrC7BiUjt1I?si=0eA3GPyr893pr6Jq"  target="_blank">
+		<img  src="https://img.youtube.com/vi/LrC7BiUjt1I/maxresdefault.jpg"  alt="Project Banner">
+	</a>
+	<br />
+</div>
+
+## 🤖 Introduction
+
+Welcome to Maven Next, your ultimate platform for discovering movies and TV shows. Maven allows users to watch trailers using an embedded YouTube player and manage their watchlist. With advanced features like Incremental Static Regeneration (ISR), robust authentication, Maven offers a smooth and engaging user experience.
+
+## ⚙️ Tech Stack
+
+- React
+- Next.js 14 (ISR)
+- Prisma ORM
+- MongoDB
+- NextAuth
+- Tailwind CSS
+- useSWR
+- Server Actions and REST APIs
+
+## 🚀 Features
+
+- 🎥 Discover movies and TV shows
+- ▶️ Watch trailers using an embedded YouTube player
+- 📋 Add movies and TV shows to your watchlist
+- 🔐 Secure authentication with NextAuth
+- ⚡ Fast performance with Incremental Static Regeneration (ISR)
+- 🌐 Advanced data fetching with useSWR
+- 🎨 Modern and responsive design with Tailwind CSS
+- 🎁 ...and much more
+
+## 🛠️ Getting Started
+
+To get started with this project, run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git  clone  https://github.com/Sire-NILESH/next-movies.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+and copy the **.env.example** variables into a separate **.env file**, fill them out and that's all you need to get started!
